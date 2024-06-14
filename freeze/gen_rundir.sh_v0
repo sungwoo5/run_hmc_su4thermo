@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# Check if the correct number of arguments was provided
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <beta> <mass>"
+    exit 1
+fi
+
+#==================================================
+# gauge configuration parameters
+BETA=$(printf "%.2f" $1)
+MASS=$(printf "%.4f" $2)
+NL=32
+NT=16
+# NL=24
+# NT=12
+#STARTING_TYPE="ColdStart"
+#STARTING_TYPE="CheckpointStartReseed"
+STARTING_TYPE="HotStart"
+# Note:
+# NT*baremass fixed
+# Nobuyuki's run 16.16.16.8  with m=0.075, 0.10, 0.125
+# Sungwoo's run  32.32.32.16 with m=     , 0.05,
+
+
+#==================================================
+# Random seed
+
+# 0th seed from gauge configuration parameters
+seed0=$(printf "%.0f" "$(echo "$NL * $NT * $MASS * $BETA " | bc)")
+
+# 1st seed for generating 10 random seeds
+MIN=1
+MAX=10000
+seed1=$(awk -v min=$MIN -v max=$MAX -v seed=$seed0 'BEGIN { srand(seed); print int(min+rand()*(max-min+1)) }')
+
+# 10 random seeds as inputs to the HMC executable
+MIN=1
+MAX=100
+seeds=`awk -v min=$MIN -v max=$MAX -v seed=$seed1 '
+BEGIN {
+    srand(seed);  # Set the seed for the random number generator
+    for (i = 1; i <= 10; i++) {
+        # Generate and print a random number in the specified range
+        print int(min + rand() * (max - min + 1));
+    }
+}'`
+
+# Convert the string into an array
+arr=($seeds)
+
+# Slice the array into two parts
+SERIAL_SEEDS="${arr[@]:0:5}"  # Extract the first 5 elements
+PARALLEL_SEEDS="${arr[@]:5:5}"  # Extract the next 5 elements
+
+
+#====================================================
+# create dirs
+str_mass=$(echo $MASS | sed 's/\./p/g')
+str_beta=$(echo $BETA | sed 's/\./p/g')
+JOB=$NL$NT"_b"$str_beta"_m"$str_mass
+dir_name="conf_nc4nf1_"${JOB}
+
+# Check if the directory already exists
+#if [ ! -d "$dir_name" ]; then
+    # Directory does not exist, so create it
+    mkdir -p "$dir_name"
+    echo "Directory '$dir_name' created."
+    
+    # create xml
+    basexml="ip_hmc_mobius_base.xml"
+    XML=${dir_name}/"ip_hmc_mobius_init.xml"
+    cp -a $basexml $XML
+    sed -i 's/SERIAL_SEEDS/'"${SERIAL_SEEDS}"'/g' $XML
+    sed -i 's/PARALLEL_SEEDS/'"${PARALLEL_SEEDS}"'/g' $XML
+    sed -i 's/PREFIX/'"${dir_name}"'/g' $XML
+    sed -i 's/BETA/'"${BETA}"'/g' $XML
+    sed -i 's/MASS/'"${MASS}"'/g' $XML
+    sed -i 's/STARTING_TYPE/'"${STARTING_TYPE}"'/g' $XML
+
+    # create lsf batch script 
+    # baselsf="bsub_base.sh"
+    baselsf="bsub_base_4.sh"
+    LSF=${dir_name}/"bsub.sh"
+    cp -a $baselsf $LSF
+    sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
+    sed -i 's/NL/'"${NL}"'/g' $LSF
+    sed -i 's/NT/'"${NT}"'/g' $LSF
+
+# else
+#     echo "Directory '$dir_name' already exists."
+# fi
