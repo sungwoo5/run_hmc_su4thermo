@@ -1,4 +1,6 @@
 # Starting_type: HotStart
+# serial RNG seed: 	[34 15 28 66 60]
+# parallel RNG seed:	[84 59 55 10 56]
 # Trajectory_length / Number_of_MD_steps: 1 / 8
 # 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
 1	 2.2562527e-01	 +1.2339625e-03 +2.0787280e-03	 1.03e+46 Accepted	 217	 959	

@@ -14,6 +14,10 @@ for d in ../conf_nc4nf1_*; do
 	# HMC parameters
 	init=`awk '/Start trajectory/ {print $13; exit}' $f`
 	startingtype=`awk '/Starting type/ {print $13; exit}' $f`
+	if [ ${startingtype} == "HotStart" ] ||  [ ${startingtype} == "ColdStart" ]; then
+	    serial_seed=`awk '/Reseeding serial RNG with seed vector/ {print $14, $15, $16, $17, $18; exit}' $f`
+	    parallel_seed=`awk '/Reseeding parallel RNG with seed vector/ {print $14, $15, $16, $17, $18; exit}' $f`
+	fi
 	trajlength=`awk '/Trajectory length/ {print $12; exit}' $f`
 	mdsteps=`awk '/Number of MD steps/ {print $14; exit}' $f`
 
@@ -24,7 +28,6 @@ for d in ../conf_nc4nf1_*; do
 	grep "Polyakov Loop" $f | awk '{print $11,$13}' | sed 's/[(),]/ /g' | awk '{printf("%d\t%+.7e\t%+.7e\n",$1,$2,$3)}' >> $fparse
 
 	printf "\n\n\n# Acc._Probability\n" >> $fparse
-	# grep "Acc. Probability" $f | awk '{print $11}' >> $fparse
 	grep "exp(-dH)" $f | awk -v init=${init} '{itraj++; printf("%d %.2e ", init+itraj, $10); if ($10 > $13) print "Accepted"; else print "Rejected";}' >> $fparse
 
 
@@ -32,11 +35,6 @@ for d in ../conf_nc4nf1_*; do
 	grep "Total time for trajectory" $f | awk  -v init=${init} '{itraj++; printf("%d %.0f\n",init+itraj, $13)}' >> $fparse
 	
 	# Parse two lines of iterations (Red/Black?) after "Compute final actionGrid : Integrator : XXXXX s : Integrator action"
-	#-------------
-	# /^ConjugateGradient Converged on iteration/ {c=4; next}: When a line starts with "ConjugateGradient Converged on iteration", set a counter c to 4 and skip to the next line.
-	# c && !--c {print; exit}: If c is non-zero, decrement c. If c becomes zero after decrementing, print the current line and exit.
-	# awk -v init=${init} '/Compute final actionGrid /  {count++; r=4; b=15; next} r && !--r {R=$12} b && !--b {B=$12; print R+B}' $f >> $fparse
-
 	printf "\n\n\n# CG_iterations\n" >> $fparse
 	awk -v init=${init} '
 /Compute final actionGrid / {itraj++; start=1; count=0; iter=0; next} 
@@ -48,6 +46,10 @@ start && count==2 {start=0; print init+itraj, iter}' $f >> $fparse
 
 	#============================================
 	header="# Starting_type: ${startingtype}\n"
+	if [ ${startingtype} == "HotStart" ] ||  [ ${startingtype} == "ColdStart" ]; then
+	    header+="# serial RNG seed: \t${serial_seed}\n"
+	    header+="# parallel RNG seed:\t${parallel_seed}\n"
+	fi
 	header+="# Trajectory_length / Number_of_MD_steps: ${trajlength} / ${mdsteps}"
 
 	# first remove the trajectory index
