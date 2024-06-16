@@ -167,3 +167,9 @@
 162	 5.3375400e-01	 +3.7716172e-03 -2.3836954e-04	 9.96e-01 Accepted	 325	 1058	
 163	 5.3367143e-01	 +1.7658435e-03 +5.3710091e-04	 1.00e+00 Accepted	 332	 1007	
 164	 5.3359877e-01	 +4.3843974e-04 -1.2253317e-03	 1.02e+00 Accepted	 328	 1026	
+# Starting_type: CheckpointStart
+# Trajectory_length / Number_of_MD_steps: 1 / 8
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+165	 5.3278285e-01	 +4.6036363e-03 -5.0881994e-04	 5.23e-01 Accepted	 265	 998	
+166	 5.3234805e-01	 +3.0808431e-04 +3.6294822e-05	 8.11e-01 Accepted	 272	 1229	
+167	 5.3189539e-01	 +3.6391478e-03 +1.5471903e-03	 8.98e-01 Accepted	 298	 1199	

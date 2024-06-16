@@ -3,7 +3,7 @@
 # Check if the correct number of arguments was provided
 if [ $# -ne 6 ]; then
     echo "Usage: $0 <NL> <NT> <beta> <mass> <STARTING_TYPE> <TRAJS>"
-    echo "<STARTING_TYPE>: HotStart/ColdStart/CheckpointStart"
+    echo "<STARTING_TYPE>: HotStart/ColdStart/CheckpointStartfromHot/CheckpointStartfromCold"
     echo "<TRAJS>: number of trajectories to run"
     echo "note: please run and create rundir manually one at a time, to add human randomness into the seed!"
     exit 1
@@ -60,7 +60,7 @@ PARALLEL_SEEDS="${arr[@]:5:5}"  # Extract the next 5 elements
 # Job description
 str_mass=$(echo $MASS | sed 's/\./p/g')
 str_beta=$(echo $BETA | sed 's/\./p/g')
-if [ ${STARTING_TYPE} == "ColdStart" ]; then
+if [[ ${STARTING_TYPE} == *"Cold"* ]]; then
     str_beta=${str_beta}c
 fi
 
@@ -72,12 +72,12 @@ dir_name="conf_nc4nf1_"${JOB}
 # Check if the directory already exists
 if [ -d "$dir_name" ]; then
     echo "Directory $dir_name already exists."
-    if [ ! ${STARTING_TYPE} == "CheckpointStart" ] ; then
+    if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
 	echo "Cannot create fresh start with ${STARTING_TYPE}"
 	exit 1
     fi
 else
-    if [ ${STARTING_TYPE} == "CheckpointStart" ] ; then
+    if [[ ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
 	echo "Cannot create dir with ${STARTING_TYPE}"
 	exit 1
     fi
@@ -92,7 +92,7 @@ NSTEPS=8
 TRAJLENGTH=1.0
 basexml="ip_hmc_mobius_base.xml"
 
-if [ ! ${STARTING_TYPE} == "CheckpointStart" ] ; then
+if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
 
     # Cold or Hot start
     START_TRAJECTORY=0
@@ -120,28 +120,38 @@ sed -i 's/PARALLEL_SEEDS/'"${PARALLEL_SEEDS}"'/g' $XML
 sed -i 's/PREFIX/'"${dir_name}"'/g' $XML
 sed -i 's/BETA/'"${BETA}"'/g' $XML
 sed -i 's/MASS/'"${MASS}"'/g' $XML
-sed -i 's/STARTING_TYPE/'"${STARTING_TYPE}"'/g' $XML
+sed -i 's/STARTING_TYPE/'"${STARTING_TYPE%%from*}"'/g' $XML
 sed -i 's/TRAJS/'"${TRAJS}"'/g' $XML
 sed -i 's/NSTEPS/'"${NSTEPS}"'/g' $XML
 sed -i 's/TRAJLENGTH/'"${TRAJLENGTH}"'/g' $XML
 
 #---------------------------
 # create lsf batch script 
-if [ ! ${STARTING_TYPE} == "CheckpointStart" ] ; then
+if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
+    # Fresh start
     baselsf="bsub_base.sh"
-    # baselsf="bsub_base_4.sh"
+
+    if [ ${NT} == "16" ] ; then
+	# let me use 4 nodes for larger volume..
+	baselsf="bsub_base_4.sh"
+    fi
+
     LSF=${dir_name}/"bsub.sh"
     cp -a $baselsf $LSF
-    sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
     sed -i 's/XML/'"${basexml}"'/g' $LSF
-    sed -i 's/NL/'"${NL}"'/g' $LSF
-    sed -i 's/NT/'"${NT}"'/g' $LSF
 else
+    # CheckpointStart
     baselsf="bsubcont_base.sh"
-    # baselsf="bsub_base_4.sh"
+
+    if [ ${NT} == "16" ] ; then
+	# let me use 4 nodes for larger volume..
+	baselsf="bsubcont_base_4.sh"
+    fi
+
     LSF=${dir_name}/"bsub_cont.sh"
     cp -a $baselsf $LSF
-    sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
-    sed -i 's/NL/'"${NL}"'/g' $LSF
-    sed -i 's/NT/'"${NT}"'/g' $LSF
 fi
+
+sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
+sed -i 's/NL/'"${NL}"'/g' $LSF
+sed -i 's/NT/'"${NT}"'/g' $LSF
