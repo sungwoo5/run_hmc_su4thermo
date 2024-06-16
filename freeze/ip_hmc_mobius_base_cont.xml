@@ -5,13 +5,13 @@
     <Trajectories>TRAJS</Trajectories>
     <MetropolisTest>true</MetropolisTest>
     <NoMetropolisUntil>0</NoMetropolisUntil>
-    <StartingType>STARTING_TYPE</StartingType>
+    <StartingType></StartingType>
     <PerformRandomShift>false</PerformRandomShift>
     <MD>
       <!-- <name>MinimumNorm2</name> -->
       <name>ForceGradient</name>
-      <MDsteps>10</MDsteps>
-      <trajL>0.1</trajL>
+      <MDsteps>NSTEPS</MDsteps>
+      <trajL>TRAJLENGTH</trajL>
     </MD>
   </HMC>
   <Checkpointer>
@@ -23,8 +23,8 @@
     <format>IEEE64BIG</format>
   </Checkpointer>
   <RandomNumberGenerator>
-    <serial_seeds>SERIAL_SEEDS</serial_seeds>
-    <parallel_seeds>PARALLEL_SEEDS</parallel_seeds>
+    <serial_seeds>SERIAL_SEEDS</serial_seeds> <!--will not be used-->
+    <parallel_seeds>PARALLEL_SEEDS</parallel_seeds> <!--will not be used-->
   </RandomNumberGenerator>
   <Action>
     <gauge_beta>BETA</gauge_beta>
