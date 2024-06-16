@@ -4,6 +4,35 @@
 
 for d in ../conf_nc4nf1_*; do
     output=${d##*/conf_nc4nf1_}.txt
+
+    #------------------------------
+    # do we need to update output?
+    if [ -e "$output" ]; then
+
+	time_output=$(stat -c %Y "$output")
+	output_is_newer=1
+
+	# then test if the log files are updated after this output
+	for f in ${d}/log.*; do 
+	    
+	    time_log=$(stat -c %Y "$f")
+
+	    if [ "$time_output" -lt "$time_log" ]; then
+		# log was updated after making output
+		output_is_newer=0
+		break		
+	    fi
+	done
+	
+	if [ $output_is_newer -eq 1 ]; then
+	    echo "no need to update ${d}" 
+	    # no need to update
+	    continue
+	fi
+    fi
+
+    #---------
+    # start 
     echo -n "" > $output
 
     for f in ${d}/log.*; do 

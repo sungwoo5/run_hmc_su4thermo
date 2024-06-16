@@ -1,0 +1,5 @@
+# Starting_type: ColdStart
+# serial RNG seed: 	[58635 32796 27874 60507 13989]
+# parallel RNG seed:	[39001 17920 65248 60968 15538]
+# Trajectory_length / Number_of_MD_steps: 0.1 / 10
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
