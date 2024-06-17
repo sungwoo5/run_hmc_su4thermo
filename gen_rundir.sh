@@ -134,6 +134,9 @@ if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
     if [ ${NT} == "16" ] ; then
 	# let me use 4 nodes for larger volume..
 	baselsf="bsub_base_4.sh"
+    elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
+	# let me use 1 node for smaller volume..
+	baselsf="bsub_base_1.sh"
     fi
 
     LSF=${dir_name}/"bsub.sh"
@@ -146,6 +149,9 @@ else
     if [ ${NT} == "16" ] ; then
 	# let me use 4 nodes for larger volume..
 	baselsf="bsubcont_base_4.sh"
+    elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
+	# let me use 1 node for smaller volume..
+	baselsf="bsubcont_base_1.sh"
     fi
 
     LSF=${dir_name}/"bsub_cont.sh"
@@ -155,3 +161,8 @@ fi
 sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
 sed -i 's/NL/'"${NL}"'/g' $LSF
 sed -i 's/NT/'"${NT}"'/g' $LSF
+
+if [ ${STARTING_TYPE} == "ColdStart" ]; then
+    sed -i 's/pbatch/pdebug/g' $LSF
+    sed -i 's/720/120/g' $LSF
+fi

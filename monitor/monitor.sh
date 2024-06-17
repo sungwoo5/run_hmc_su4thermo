@@ -35,7 +35,7 @@ for d in ../conf_nc4nf1_*; do
     # start 
     echo -n "" > $output
 
-    for f in ${d}/log.*; do 
+    for f in $(ls ${d}/log.* | sort -V); do 
 	ls $f
 	fparse=${f##*/log.lrun.}.tmp
 	echo -n "" > $fparse
