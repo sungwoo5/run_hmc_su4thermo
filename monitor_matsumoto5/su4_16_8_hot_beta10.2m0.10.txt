@@ -1,0 +1,52 @@
+# Starting_type: HotStart
+# serial RNG seed: 	[95 99 20 93 16]
+# parallel RNG seed:	[63 79 81 99 10]
+# Trajectory_length / Number_of_MD_steps: 1 / 12
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+1	 2.1706368e-01	 -1.3269705e-03 +1.3089266e-05		 451	 1308	
+2	 3.0095438e-01	 +7.4069304e-04 +1.8664821e-03		 605	 1560	
+3	 3.4414026e-01	 -1.0886747e-03 -3.0069878e-03		 670	 1670	
+4	 3.6975707e-01	 -4.0666300e-03 +4.3485359e-03		 695	 1715	
+5	 3.8633248e-01	 -1.9835709e-03 -8.4142624e-03		 709	 1743	
+# Starting_type: CheckpointStart
+# Trajectory_length / Number_of_MD_steps: 1 / 10
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+6	 3.9711733e-01	 -7.8753995e-04 -5.2400449e-03		 630	 1747	
+7	 4.0523413e-01	 +2.5968839e-03 -1.1494013e-03		 629	 1753	
+8	 4.1218713e-01	 +7.1679246e-03 +1.9021322e-03		 633	 1767	
+9	 4.1675554e-01	 +1.3967196e-03 +9.1799684e-04		 633	 1762	
+10	 4.2038318e-01	 -4.1756947e-04 -2.4903880e-03		 632	 1771	
+# Starting_type: CheckpointStart
+# Trajectory_length / Number_of_MD_steps: 1 / 10
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+11	 4.2297505e-01	 +4.7932807e-03 -1.3971216e-03		 423	 1188	
+12	 4.2492617e-01	 -1.4293183e-03 -8.2212503e-04		 425	 1183	
+13	 4.2676553e-01	 +8.9132104e-03 +6.9627843e-03		 424	 1183	
+14	 4.2851985e-01	 -2.6507814e-03 +6.7896878e-03		 424	 1182	
+15	 4.2951685e-01	 -5.4168657e-03 -2.5627617e-03		 424	 1186	
+16	 4.3151453e-01	 +1.9799145e-03 -1.4356021e-03		 423	 1189	
+17	 4.3266854e-01	 +2.5882177e-03 -4.7104361e-03		 424	 1183	
+18	 4.3336072e-01	 -5.3077531e-03 -1.2013789e-04		 424	 1187	
+# Starting_type: CheckpointStart
+# Trajectory_length / Number_of_MD_steps: 1 / 10
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+19	 4.3432460e-01	 -3.7412297e-04 -7.4741771e-04	 8.43e-01 Accepted	 423	 1189	
+20	 4.3488959e-01	 -1.0417589e-03 +3.1877069e-04	 9.35e-01 Accepted	 422	 1183	
+21	 4.3520086e-01	 +4.4103476e-03 +1.9977287e-03	 1.30e+00 Accepted	 423	 1183	
+22	 4.3669084e-01	 -2.2627546e-03 +1.2999360e-03	 8.77e-01 Accepted	 420	 1185	
+23	 4.3742132e-01	 -4.5991931e-03 +1.2014662e-03	 1.09e+00 Accepted	 421	 1188	
+24	 4.3821409e-01	 +3.2922765e-04 -2.3568021e-03	 9.33e-01 Accepted	 421	 1188	
+25	 4.3855243e-01	 -3.1773153e-03 +6.6821013e-03	 1.16e+00 Accepted	 421	 1181	
+26	 4.3894028e-01	 -2.7875643e-03 +5.6110363e-04	 1.00e+00 Accepted	 421	 1183	
+# Starting_type: 
+# Trajectory_length / Number_of_MD_steps: /
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+# Starting_type: 
+# Trajectory_length / Number_of_MD_steps: /
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+# Starting_type: 
+# Trajectory_length / Number_of_MD_steps: /
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+# Starting_type: 
+# Trajectory_length / Number_of_MD_steps: /
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	

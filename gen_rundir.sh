@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Check if the correct number of arguments was provided
-if [ $# -ne 6 ]; then
-    echo "Usage: $0 <NL> <NT> <beta> <mass> <STARTING_TYPE> <TRAJS>"
-    echo "<STARTING_TYPE>: HotStart/ColdStart/CheckpointStartfromHot/CheckpointStartfromCold"
-    echo "<TRAJS>: number of trajectories to run"
+if [ $# -ne 5 ]; then
+    echo "Usage: $0 <NL> <NT> <beta> <mass> <STARTING_TYPE>"
+    echo "<STARTING_TYPE>: HotStart/ColdStart" 
+    # scripts for CheckpointStartfromHot/CheckpointStartfromCold will be automatically generated simultaneously
+    #STARTING_TYPE="CheckpointStartReseed" is not currently supported here
     echo "note: please run and create rundir manually one at a time, to add human randomness into the seed!"
     exit 1
 fi
@@ -16,8 +17,7 @@ NT=$2
 BETA=$(printf "%.2f" $3)
 MASS=$(printf "%.4f" $4)
 STARTING_TYPE=$5
-TRAJS=$6
-#STARTING_TYPE="CheckpointStartReseed"
+TRAJS=500	# just large enough number to run over the whole walltime
 # Note:
 # NT*baremass fixed
 # Nobuyuki's run 16.16.16.8  with m=0.075, 0.10, 0.125
@@ -72,15 +72,13 @@ dir_name="conf_nc4nf1_"${JOB}
 # Check if the directory already exists
 if [ -d "$dir_name" ]; then
     echo "Directory $dir_name already exists."
-    if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
-	echo "Cannot create fresh start with ${STARTING_TYPE}"
-	exit 1
-    fi
+    echo "Cannot create fresh start with ${STARTING_TYPE}"
+    exit 1
 else
-    if [[ ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
-	echo "Cannot create dir with ${STARTING_TYPE}"
-	exit 1
-    fi
+    # if [[ ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
+    # 	echo "Cannot create dir with ${STARTING_TYPE}"
+    # 	exit 1
+    # fi
     # Directory does not exist, so create it
     mkdir -p "$dir_name"
     echo "Directory $dir_name created."
@@ -92,77 +90,89 @@ NSTEPS=8
 TRAJLENGTH=1.0
 basexml="ip_hmc_mobius_base.xml"
 
-if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
-
-    # Cold or Hot start
-    START_TRAJECTORY=0
-    if [ ${STARTING_TYPE} == "ColdStart" ]; then
-	# basexml="ip_hmc_mobius_base_cold.xml"
-	NSTEPS=10
-	TRAJLENGTH=0.1
-    fi
-    XML=${dir_name}/${basexml}
+for ifcheckpoint in "" "CheckpointStartfrom"; do
     
-    cp -a $basexml $XML
-    sed -i 's/START_TRAJECTORY/'"${START_TRAJECTORY}"'/g' $XML
+    SKIPFORTHERMALIZATION=0
+    STARTING_TYPE=${ifcheckpoint}${STARTING_TYPE}
 
-else
+    if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
 
-    # CheckpointStart
-    XML=${dir_name}/${basexml%%.xml}_cont".xml"
-    cp -a $basexml $XML
+	# Cold or Hot start
+	START_TRAJECTORY=0
+	if [ ${STARTING_TYPE} == "ColdStart" ]; then
+	    # NSTEPS=10
+	    # TRAJLENGTH=0.1
+	    # -> rather than putting smaller trajL,
+	    #    now put <NoMetropolisUntil>SKIPFORTHERMALIZATION</NoMetropolisUntil>
+	    #    which skip metropolistest and just accept
+	    SKIPFORTHERMALIZATION=50	
+	fi
+	XML=${dir_name}/${basexml}
+	
+	cp -a $basexml $XML
+	sed -i 's/START_TRAJECTORY/'"${START_TRAJECTORY}"'/g' $XML
 
-    # starting traj will be determined by the batch script at the runtime
-fi
+    else
 
-sed -i 's/SERIAL_SEEDS/'"${SERIAL_SEEDS}"'/g' $XML
-sed -i 's/PARALLEL_SEEDS/'"${PARALLEL_SEEDS}"'/g' $XML
-sed -i 's/PREFIX/'"${dir_name}"'/g' $XML
-sed -i 's/BETA/'"${BETA}"'/g' $XML
-sed -i 's/MASS/'"${MASS}"'/g' $XML
-sed -i 's/STARTING_TYPE/'"${STARTING_TYPE%%from*}"'/g' $XML
-sed -i 's/TRAJS/'"${TRAJS}"'/g' $XML
-sed -i 's/NSTEPS/'"${NSTEPS}"'/g' $XML
-sed -i 's/TRAJLENGTH/'"${TRAJLENGTH}"'/g' $XML
+	# CheckpointStart
+	XML=${dir_name}/${basexml%%.xml}_cont".xml"
+	cp -a $basexml $XML
 
-#---------------------------
-# create lsf batch script 
-if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
-    # Fresh start
-    baselsf="bsub_base.sh"
-
-    if [ ${NT} == "16" ] ; then
-	# let me use 4 nodes for larger volume..
-	baselsf="bsub_base_4.sh"
-    elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
-	# let me use 1 node for smaller volume..
-	baselsf="bsub_base_1.sh"
+	# starting traj will be determined by the batch script at the runtime
     fi
 
-    LSF=${dir_name}/"bsub.sh"
-    cp -a $baselsf $LSF
-    sed -i 's/XML/'"${basexml}"'/g' $LSF
-else
-    # CheckpointStart
-    baselsf="bsubcont_base.sh"
+    sed -i 's/SERIAL_SEEDS/'"${SERIAL_SEEDS}"'/g' $XML
+    sed -i 's/PARALLEL_SEEDS/'"${PARALLEL_SEEDS}"'/g' $XML
+    sed -i 's/PREFIX/'"${dir_name}"'/g' $XML
+    sed -i 's/BETA/'"${BETA}"'/g' $XML
+    sed -i 's/MASS/'"${MASS}"'/g' $XML
+    sed -i 's/STARTING_TYPE/'"${STARTING_TYPE%%from*}"'/g' $XML
+    sed -i 's/TRAJS/'"${TRAJS}"'/g' $XML
+    sed -i 's/NSTEPS/'"${NSTEPS}"'/g' $XML
+    sed -i 's/TRAJLENGTH/'"${TRAJLENGTH}"'/g' $XML
+    sed -i 's/SKIPFORTHERMALIZATION/'"${SKIPFORTHERMALIZATION}"'/g' $XML
 
-    if [ ${NT} == "16" ] ; then
-	# let me use 4 nodes for larger volume..
-	baselsf="bsubcont_base_4.sh"
-    elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
-	# let me use 1 node for smaller volume..
-	baselsf="bsubcont_base_1.sh"
+    #---------------------------
+    # create lsf batch script 
+    if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
+	# Fresh start
+	baselsf="bsub_base.sh"
+
+	if [ ${NT} == "16" ] ; then
+	    # let me use 4 nodes for larger volume..
+	    baselsf="bsub_base_4.sh"
+	# elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
+	elif [[ ${NT} == "8" ]] ; then
+	    # let me use 1 node for smaller volume..
+	    baselsf="bsub_base_1.sh"
+	fi
+
+	LSF=${dir_name}/"bsub.sh"
+	cp -a $baselsf $LSF
+	sed -i 's/XML/'"${basexml}"'/g' $LSF
+    else
+	# CheckpointStart
+	baselsf="bsubcont_base.sh"
+
+	if [ ${NT} == "16" ] ; then
+	    # let me use 4 nodes for larger volume..
+	    baselsf="bsubcont_base_4.sh"
+	# elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
+	elif [[ ${NT} == "8" ]] ; then
+	    # let me use 1 node for smaller volume..
+	    baselsf="bsubcont_base_1.sh"
+	fi
+
+	LSF=${dir_name}/"bsub_cont.sh"
+	cp -a $baselsf $LSF
     fi
 
-    LSF=${dir_name}/"bsub_cont.sh"
-    cp -a $baselsf $LSF
-fi
+    sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
+    sed -i 's/NL/'"${NL}"'/g' $LSF
+    sed -i 's/NT/'"${NT}"'/g' $LSF
 
-sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
-sed -i 's/NL/'"${NL}"'/g' $LSF
-sed -i 's/NT/'"${NT}"'/g' $LSF
-
-if [ ${STARTING_TYPE} == "ColdStart" ]; then
-    sed -i 's/pbatch/pdebug/g' $LSF
-    sed -i 's/720/120/g' $LSF
-fi
+    # if [ ${STARTING_TYPE} == "ColdStart" ]; then
+    #     sed -i 's/pbatch/pdebug/g' $LSF
+    #     sed -i 's/720/120/g' $LSF
+    # fi
+done

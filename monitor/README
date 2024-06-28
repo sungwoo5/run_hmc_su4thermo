@@ -1,0 +1,55 @@
+[062624 sungwoo]
+I put wrong setting to skip the first 50 traj for continuing run from the cold start.. The followings were affected
+I am restarting these
+
+[park49@lassen709:run_gauge_conf]$ grep '<NoMetropolisUntil>50</NoMetropolisUntil>' conf_*/ip_hmc_mobius_base_cont.xml
+conf_nc4nf1_248_b10p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b11p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b12p00c_m0p1000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b12p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b12p40c_m0p1000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b12p80c_m0p1000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b13p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b13p20c_m0p1000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b14p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_248_b15p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_328_b10p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_328_b11p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_328_b12p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_328_b13p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_328_b14p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+conf_nc4nf1_328_b15p00c_m0p4000/ip_hmc_mobius_base_cont.xml:    <NoMetropolisUntil>50</NoMetropolisUntil>
+
+[park49@lassen709:run_gauge_conf]$ for f in $(cat x); do grep '>50<' $f; sed -i 's/>50</>0</g' $f; grep NoMetropolisUntil $f; done
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>50</NoMetropolisUntil>
+    <NoMetropolisUntil>0</NoMetropolisUntil>

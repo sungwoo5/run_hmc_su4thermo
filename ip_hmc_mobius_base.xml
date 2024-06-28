@@ -4,7 +4,7 @@
     <StartTrajectory>START_TRAJECTORY</StartTrajectory>
     <Trajectories>TRAJS</Trajectories>
     <MetropolisTest>true</MetropolisTest>
-    <NoMetropolisUntil>0</NoMetropolisUntil>
+    <NoMetropolisUntil>SKIPFORTHERMALIZATION</NoMetropolisUntil>
     <StartingType>STARTING_TYPE</StartingType>
     <PerformRandomShift>false</PerformRandomShift>
     <MD>

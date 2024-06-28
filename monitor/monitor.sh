@@ -3,6 +3,7 @@
 # to monitor plaquette, polyakov loop, acceptance rate, and so on
 
 for d in ../conf_nc4nf1_*; do
+#for d in ../conf_nc4nf1_248_b13p00_m0p4000; do
     output=${d##*/conf_nc4nf1_}.txt
 
     #------------------------------
@@ -57,8 +58,8 @@ for d in ../conf_nc4nf1_*; do
 	grep "Polyakov Loop" $f | awk '{print $11,$13}' | sed 's/[(),]/ /g' | awk '{printf("%d\t%+.7e\t%+.7e\n",$1,$2,$3)}' >> $fparse
 
 	printf "\n\n\n# Acc._Probability\n" >> $fparse
-	grep "exp(-dH)" $f | awk -v init=${init} '{itraj++; printf("%d %.2e ", init+itraj, $10); if ($10 > $13) print "Accepted"; else print "Rejected";}' >> $fparse
-
+	# grep "exp(-dH)" $f | awk -v init=${init} '{itraj++; printf("%d %.2e ", init+itraj, $10); if ($10 > $13) print "Accepted"; else print "Rejected";}' >> $fparse
+	awk '/Skipping/ {printf("1 %.2e Skipping\n", exp(-prev2)); next} /exp\(-dH\)/ {printf("1 %.2e ",$10); if ($10 > $13) print "Accepted"; else print "Rejected"; next} {prev2=prev1; prev1=$16}' $f >> $fparse
 
 	printf "\n\n\n# runtime_per_traj(s)\n" >> $fparse
 	grep "Total time for trajectory" $f | awk  -v init=${init} '{itraj++; printf("%d %.0f\n",init+itraj, $13)}' >> $fparse
@@ -71,8 +72,8 @@ start && /ConjugateGradient Converged on iteration/ {count++; iter+=$12}
 start && count==2 {start=0; print init+itraj, iter}' $f >> $fparse
 
 	# parse finished
-	# make it multicolumn
 
+	# make it multicolumn
 	#============================================
 	header="# Starting_type: ${startingtype}\n"
 	if [ ${startingtype} == "HotStart" ] ||  [ ${startingtype} == "ColdStart" ]; then
@@ -84,8 +85,21 @@ start && count==2 {start=0; print init+itraj, iter}' $f >> $fparse
 	# first remove the trajectory index
 	awk '{$1=""; print $0}' $fparse > tmp
 	echo -e $header > ${fparse}	# The -e option enables interpretation of backslash escapes.
-	awk -v init=${init} 'BEGIN{RS="";FS="\n"} {for(i=1;i<=NF;i++) a[NR,i]=$i} 
-END{for(j=1;j<=NF;j++) { if(j==1){printf "# \t"}else{printf j-1+init "\t"}; 
+	
+	# make 2d array for multicolumn text
+	# check if all the columns have the same rows (Ntraj[NR]),
+	# truncate for the smallest Ntraj[NR]
+	awk -v init=${init} '
+BEGIN{RS="";FS="\n"} 
+{ 
+   Ntraj[NR] = NF;
+   for(i=1;i<=NF;i++) a[NR,i]=$i;
+} 
+END{
+   minNtraj = Ntraj[1];
+   for(k=2;k<=NR;k++) if(Ntraj[k] < minNtraj) minNtraj = Ntraj[k];
+
+   for(j=1;j<=minNtraj;j++) { if(j==1){printf "# \t"}else{printf j-1+init "\t"}; 
                          for(i=1;i<=NR;i++) printf a[i,j] "\t"; 
                          print ""}}' tmp >> $fparse
 
