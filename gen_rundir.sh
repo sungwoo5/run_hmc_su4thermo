@@ -88,6 +88,7 @@ fi
 # create xml
 NSTEPS=8
 TRAJLENGTH=1.0
+basepath="base"
 basexml="ip_hmc_mobius_base.xml"
 
 for ifcheckpoint in "" "CheckpointStartfrom"; do
@@ -109,14 +110,14 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
 	fi
 	XML=${dir_name}/${basexml}
 	
-	cp -a $basexml $XML
+	cp -a ${basepath}/$basexml $XML
 	sed -i 's/START_TRAJECTORY/'"${START_TRAJECTORY}"'/g' $XML
 
     else
 
 	# CheckpointStart
 	XML=${dir_name}/${basexml%%.xml}_cont".xml"
-	cp -a $basexml $XML
+	cp -a $basepath/$basexml $XML
 
 	# starting traj will be determined by the batch script at the runtime
     fi
@@ -148,7 +149,7 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
 	fi
 
 	LSF=${dir_name}/"bsub.sh"
-	cp -a $baselsf $LSF
+	cp -a $basepath/$baselsf $LSF
 	sed -i 's/XML/'"${basexml}"'/g' $LSF
     else
 	# CheckpointStart
@@ -157,14 +158,14 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
 	if [ ${NT} == "16" ] ; then
 	    # let me use 4 nodes for larger volume..
 	    baselsf="bsubcont_base_4.sh"
-	# elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
-	elif [[ ${NT} == "8" ]] ; then
+	elif [[ ${NT} == "8" && ${NL} == "24" ]] ; then
+	# elif [[ ${NT} == "8" ]] ; then
 	    # let me use 1 node for smaller volume..
 	    baselsf="bsubcont_base_1.sh"
 	fi
 
 	LSF=${dir_name}/"bsub_cont.sh"
-	cp -a $baselsf $LSF
+	cp -a $basepath/$baselsf $LSF
     fi
 
     sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF

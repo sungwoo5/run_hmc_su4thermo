@@ -93,3 +93,6 @@
 # Starting_type: 
 # Trajectory_length / Number_of_MD_steps: /
 # 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+# Starting_type: 
+# Trajectory_length / Number_of_MD_steps: /
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
