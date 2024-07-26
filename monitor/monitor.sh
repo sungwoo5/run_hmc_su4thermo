@@ -44,7 +44,7 @@ for d in ../conf_nc4nf1_??8_*; do
 	# HMC parameters
 	init=`awk '/Start trajectory/ {print $13; exit}' $f`
 	startingtype=`awk '/Starting type/ {print $13; exit}' $f`
-	if [ ${startingtype} == "HotStart" ] ||  [ ${startingtype} == "ColdStart" ]; then
+	if [ ${startingtype} == "HotStart" ] ||  [ ${startingtype} == "ColdStart" ]  ||  [ ${startingtype} == "CheckpointStartReseed" ] ; then
 	    serial_seed=`awk '/Reseeding serial RNG with seed vector/ {print $14, $15, $16, $17, $18; exit}' $f`
 	    parallel_seed=`awk '/Reseeding parallel RNG with seed vector/ {print $14, $15, $16, $17, $18; exit}' $f`
 	fi
@@ -76,7 +76,12 @@ start && count==2 {start=0; print init+itraj, iter}' $f >> $fparse
 	# make it multicolumn
 	#============================================
 	header="# Starting_type: ${startingtype}\n"
-	if [ ${startingtype} == "HotStart" ] ||  [ ${startingtype} == "ColdStart" ]; then
+	if [ ${startingtype} == "CheckpointStartReseed" ]; then
+	    zerothconf=${d}/${d##*/}_lat.0
+	    header+="# "
+	    header+="$(ls -l ${zerothconf} | cut -d ' ' -f 9- | sed 's/\.\.\///g')\n"
+	fi
+	if [ ${startingtype} == "HotStart" ] ||  [ ${startingtype} == "ColdStart" ] ||  [ ${startingtype} == "CheckpointStartReseed" ]; then
 	    header+="# serial RNG seed: \t${serial_seed}\n"
 	    header+="# parallel RNG seed:\t${parallel_seed}\n"
 	fi
