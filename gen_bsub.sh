@@ -3,16 +3,17 @@
 #====================================================
 # JOB=$NL$NT"_b"$str_beta"_m"$str_mass
 # dir_name="conf_nc4nf1_"${JOB}
-NL=32
+NL=24
 NT=8
 
-for dir_name in conf_nc4nf1_${NL}${NT}_*; do
+#for dir_name in conf_nc4nf1_${NL}${NT}_*; do
+for dir_name in conf_nc4nf1_${NL}${NT}_*m0p0100; do
     JOB=${dir_name##conf_nc4nf1_}
 
     #---------------------------
     # create lsf batch script 
 
-    baselsf="bsubcont_base.sh"
+    baselsf="base/bsubcont_base.sh"
 
     LSF=${dir_name}/"bsub_cont_2.sh"
     cp -a $baselsf $LSF
@@ -23,13 +24,13 @@ for dir_name in conf_nc4nf1_${NL}${NT}_*; do
 
 
 
-    baselsf="bsubcont_base_1.sh"
+    # baselsf="bsubcont_base_1.sh"
 
-    LSF=${dir_name}/"bsub_cont_1.sh"
-    cp -a $baselsf $LSF
+    # LSF=${dir_name}/"bsub_cont_1.sh"
+    # cp -a $baselsf $LSF
 
-    sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
-    sed -i 's/NL/'"${NL}"'/g' $LSF
-    sed -i 's/NT/'"${NT}"'/g' $LSF
+    # sed -i 's/JOBNAME/'"${JOB}"'/g' $LSF
+    # sed -i 's/NL/'"${NL}"'/g' $LSF
+    # sed -i 's/NT/'"${NT}"'/g' $LSF
 
 done

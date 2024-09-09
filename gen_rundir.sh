@@ -14,7 +14,7 @@ fi
 # gauge configuration parameters
 NL=$1
 NT=$2
-BETA=$(printf "%.2f" $3)
+BETA=$(printf "%05.2f" $3)
 MASS=$(printf "%.4f" $4)
 STARTING_TYPE=$5
 TRAJS=500	# just large enough number to run over the whole walltime
@@ -132,6 +132,16 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
     sed -i 's/NSTEPS/'"${NSTEPS}"'/g' $XML
     sed -i 's/TRAJLENGTH/'"${TRAJLENGTH}"'/g' $XML
     sed -i 's/SKIPFORTHERMALIZATION/'"${SKIPFORTHERMALIZATION}"'/g' $XML
+
+
+    # FIXME:
+    # temporary thing to adjust params for 32^3*8 m=0.05
+    if [[ ${NT} == "8" ]]; then
+	if [[ ${MASS} == "0.0500" || ${MASS} == "0.0100" ]] ; then
+	    sed -i 's/>1.8</>1.5</g' $XML
+	    sed -i 's/MDsteps>'$NSTEPS'</MDsteps>7</g' $XML
+	fi
+    fi
 
     #---------------------------
     # create lsf batch script 

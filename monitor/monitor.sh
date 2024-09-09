@@ -2,8 +2,8 @@
 # parse the log files of each HMC run
 # to monitor plaquette, polyakov loop, acceptance rate, and so on
 
-for d in ../conf_nc4nf1_??8_*; do
-#for d in ../conf_nc4nf1_??8_b1?p?2*; do
+for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_*1000 ; do
+#for d in ../conf_nc4nf1_??8_b10p[7-9]*1000; do
     output=${d##*/conf_nc4nf1_}.txt
 
     #------------------------------
