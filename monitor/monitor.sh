@@ -2,8 +2,14 @@
 # parse the log files of each HMC run
 # to monitor plaquette, polyakov loop, acceptance rate, and so on
 
-for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_*1000 ; do
-#for d in ../conf_nc4nf1_??8_b10p[7-9]*1000; do
+# v2: save parse of each log file to tmp
+fparse_dir=fparse
+mkdir -p ${fparse_dir}
+
+#-------------------------
+# run over the ensembles
+#for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_b10p[7-9]*1000; do
+for d in ../conf_nc4nf1_248_b10p75*100; do
     output=${d##*/conf_nc4nf1_}.txt
 
     #------------------------------
@@ -32,13 +38,36 @@ for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_*100
 	fi
     fi
 
-    #---------
-    # start 
-    echo -n "" > $output
-
+    #-----------------------------
+    # looking into each log file
     for f in $(ls ${d}/log.* | sort -V); do 
 	ls $f
-	fparse=${f##*/log.lrun.}.tmp
+	fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
+
+
+	#------------------------------
+	# do we need to update tmp parse file?
+	if [ -e "$fparse" ]; then
+
+	    time_fparse=$(stat -c %Y "$fparse")
+	    fparse_is_newer=1
+
+	    time_log=$(stat -c %Y "$f")
+	    
+	    if [ "$time_fparse" -lt "$time_log" ]; then
+		# log was updated after making fparse
+		break		
+	    else
+		# echo "no need to update ${fparse}" 
+		# no need to update
+		continue
+	    fi
+	fi
+
+
+
+	#----------------
+	# start parsing
 	echo -n "" > $fparse
 
 	# HMC parameters
@@ -108,9 +137,18 @@ END{
                          for(i=1;i<=NR;i++) printf a[i,j] "\t"; 
                          print ""}}' tmp >> $fparse
 
-	# save the parsed logfile into output
-	cat ${fparse}>> ${output}
-	rm *tmp
+	rm tmp
 
     done
+
+    #---------------
+    # update output
+    echo -n "" > $output
+    for f in $(ls ${d}/log.* | sort -V); do 
+	fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
+
+	# save the parsed logfile into output
+	cat ${fparse}>> ${output}
+    done
+
 done
