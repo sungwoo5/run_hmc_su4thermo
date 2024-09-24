@@ -9,7 +9,8 @@ mkdir -p ${fparse_dir}
 #-------------------------
 # run over the ensembles
 #for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_b10p[7-9]*1000; do
-for d in ../conf_nc4nf1_248_b10p75*100; do
+#for d in ../conf_nc4nf1_248_b10p75*100; do
+for d in ../confs/conf_nc4nf1_??12_*667; do
     output=${d##*/conf_nc4nf1_}.txt
 
     #------------------------------
@@ -56,7 +57,8 @@ for d in ../conf_nc4nf1_248_b10p75*100; do
 	    
 	    if [ "$time_fparse" -lt "$time_log" ]; then
 		# log was updated after making fparse
-		break		
+		# so proceed to update
+		:
 	    else
 		# echo "no need to update ${fparse}" 
 		# no need to update

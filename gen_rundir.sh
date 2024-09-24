@@ -66,12 +66,13 @@ fi
 
 JOB=$NL$NT"_b"$str_beta"_m"$str_mass
 here=`pwd -P`
+dir_path="./confs"
 dir_name="conf_nc4nf1_"${JOB}
 
 #-----------------------------------------
 # Check if the directory already exists
-if [ -d "$dir_name" ]; then
-    echo "Directory $dir_name already exists."
+if [ -d "${dir_path}/${dir_name}" ]; then
+    echo "Directory ${dir_path}/${dir_name} already exists."
     echo "Cannot create fresh start with ${STARTING_TYPE}"
     exit 1
 else
@@ -80,16 +81,22 @@ else
     # 	exit 1
     # fi
     # Directory does not exist, so create it
-    mkdir -p "$dir_name"
-    echo "Directory $dir_name created."
+    mkdir -p "${dir_path}/${dir_name}"
+    echo "Directory ${dir_path}/${dir_name} created."
 fi    
 
 #--------------
 # create xml
-NSTEPS=8
+NSTEPS=7
 TRAJLENGTH=1.0
 basepath="base"
 basexml="ip_hmc_mobius_base.xml"
+
+hostname=$(hostname)
+JOB_SCHEDULER="bsub"
+if [[ ${hostname} == "tuolumne"* ]]; then
+    JOB_SCHEDULER="flux"
+fi
 
 for ifcheckpoint in "" "CheckpointStartfrom"; do
     
@@ -108,7 +115,7 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
 	    #    which skip metropolistest and just accept
 	    SKIPFORTHERMALIZATION=50	
 	fi
-	XML=${dir_name}/${basexml}
+	XML=${dir_path}/${dir_name}/${basexml}
 	
 	cp -a ${basepath}/$basexml $XML
 	sed -i 's/START_TRAJECTORY/'"${START_TRAJECTORY}"'/g' $XML
@@ -116,7 +123,7 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
     else
 
 	# CheckpointStart
-	XML=${dir_name}/${basexml%%.xml}_cont".xml"
+	XML=${dir_path}/${dir_name}/${basexml%%.xml}_cont".xml"
 	cp -a $basepath/$basexml $XML
 
 	# starting traj will be determined by the batch script at the runtime
@@ -147,7 +154,7 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
     # create lsf batch script 
     if [[ ! ${STARTING_TYPE} == "CheckpointStart"* ]] ; then
 	# Fresh start
-	baselsf="bsub_base.sh"
+	baselsf="${JOB_SCHEDULER}_base.sh"
 
 	if [ ${NT} == "16" ] ; then
 	    # let me use 4 nodes for larger volume..
@@ -158,7 +165,7 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
 	    baselsf="bsub_base_1.sh"
 	fi
 
-	LSF=${dir_name}/"bsub.sh"
+	LSF=${dir_path}/${dir_name}/"${JOB_SCHEDULER}.sh"
 	cp -a $basepath/$baselsf $LSF
 	sed -i 's/XML/'"${basexml}"'/g' $LSF
     else
@@ -174,7 +181,7 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
 	    baselsf="bsubcont_base_1.sh"
 	fi
 
-	LSF=${dir_name}/"bsub_cont.sh"
+	LSF=${dir_path}/${dir_name}/"bsub_cont.sh"
 	cp -a $basepath/$baselsf $LSF
     fi
 
