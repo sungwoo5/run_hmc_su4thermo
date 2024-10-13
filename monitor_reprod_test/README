@@ -1,0 +1,2 @@
+1) ./monitor_testrun2.sh
+2) ./diff.sh -> this will run node_distribution_factor.py 
