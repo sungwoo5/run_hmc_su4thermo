@@ -13,7 +13,7 @@ mkdir -p ${fparse_dir}
 #for d in ../conf_nc4nf1_248_b10p75*100; do
 #for d in ../confs/conf_nc4nf1_??12_*667; do
 #for d in ../confs/conf_nc4nf1_328_b10p8*1000; do
-for d in ../confs/conf_nc4nf1_328_b11p0*4000; do
+for d in ../confs/conf_nc4nf1_248_b11p0*4000 ../confs/conf_nc4nf1_328_b11p0*4000; do
     outputlabel=${d##*/conf_nc4nf1_}
     output=${outputlabel}.txt
 
@@ -172,7 +172,7 @@ END{
     echo -n "" > $output
     # for f in $(ls ${d}/log.* | sort -V); do 
     # 	fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
-    for fparse in $(ls ${fparse_dir}/${outputlabel}*.tmp | sort -V); do 
+    for fparse in $(ls ${fparse_dir}/${outputlabel}*.tmp | grep -v "cont") $(ls ${fparse_dir}/${outputlabel}*.tmp | grep "cont" | sort -V); do 
     	# fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
 
 	# save the parsed logfile into output
