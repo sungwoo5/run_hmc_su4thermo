@@ -1,8 +1,8 @@
 #!/bin/bash
-#FLUX: -t 70m
+#FLUX: -t 60m
 #FLUX: --output={{name}}
 #FLUX: -N 16
-#FLUX: -q pbatch
+#FLUX: -q pdebug
 #FLUX: --exclusive
 
 date
@@ -33,7 +33,7 @@ beta=$(echo $beta | sed 's/c//g' | sed 's/p/./g')
 MDsteps=8
 M5=1.8
 saveInterval=2
-Ntraj=40
+Ntraj=36
 
 
 # make the input xml
@@ -106,6 +106,12 @@ now=$(date +"%m%d%H%M%S")
 LOG=log/log.${label}_cont${lasttraj}_${now}
 
 echo "Job ID: $FLUX_JOB_ID"	# this is somehow not working...
+
+
+# make nodelist_used_run2.txt
+nodelist_used=../nodelist_used_run2.txt
+flux hostlist -led' ' | sed 's/tuolumne//g' >>${nodelist_used}
+
 
 # print the nodelist
 # https://flux-framework.readthedocs.io/projects/flux-core/en/latest/man1/flux-hostlist.html

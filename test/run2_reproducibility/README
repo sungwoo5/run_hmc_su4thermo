@@ -1,2 +1,4 @@
-1) ./monitor_testrun2.sh
-2) ./diff.sh -> this will run node_distribution_factor.py 
+1.monitor: ./monitor_testrun2.sh
+2.runtimediff: ./diff.sh will create analyze_*txt
+3.nodedistrubiton: ./run_nodedistribution.sh will execute node_distribution_factor.py
+		   cat plot_328_b10p8*txt > data2.txt for gnu plotting

@@ -6,6 +6,10 @@
 
 # 100724
 # this is to monitor the test run2
+
+# 102524
+# Note that this doesn't exclude jobs that didn't go through the final reproducibility test or comparison
+# Those jobs are still worth exploring the runtime difference
 fparse_dir=fparse
 mkdir -p ${fparse_dir}
 
@@ -14,61 +18,63 @@ mkdir -p ${fparse_dir}
 #for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_b10p[7-9]*1000; do
 #for d in ../conf_nc4nf1_248_b10p75*100; do
 #for d in ../confs/conf_nc4nf1_??12_*667; do
-for d in ../confs/conf_nc4nf1_328_*1000; do
+#for d in ../confs/conf_nc4nf1_328_*1000; do
+#for d in ../../confs/conf_nc4nf1_328_b10p80_m0p1000; do
+for d in ../../../confs/conf_nc4nf1_328_b10p85_m0p1000; do
     output=${d##*/conf_nc4nf1_}.txt
 
     #------------------------------
     # do we need to update output?
-    if [ -e "$output" ]; then
+    # if [ -e "$output" ]; then
 
-	time_output=$(stat -c %Y "$output")
-	output_is_newer=1
+    # 	time_output=$(stat -c %Y "$output")
+    # 	output_is_newer=1
 
-	# then test if the log files are updated after this output
-	for f in ${d}/log/log.*; do 
+    # 	# then test if the log files are updated after this output
+    # 	for f in ${d}/log/log.*; do 
 	    
-	    time_log=$(stat -c %Y "$f")
+    # 	    time_log=$(stat -c %Y "$f")
 
-	    if [ "$time_output" -lt "$time_log" ]; then
-		# log was updated after making output
-		output_is_newer=0
-		break		
-	    fi
-	done
+    # 	    if [ "$time_output" -lt "$time_log" ]; then
+    # 		# log was updated after making output
+    # 		output_is_newer=0
+    # 		break		
+    # 	    fi
+    # 	done
 	
-	if [ $output_is_newer -eq 1 ]; then
-	    echo "no need to update ${d}" 
-	    # no need to update
-	    continue
-	fi
-    fi
+    # 	if [ $output_is_newer -eq 1 ]; then
+    # 	    echo "no need to update ${d}" 
+    # 	    # no need to update
+    # 	    continue
+    # 	fi
+    # fi
 
     #-----------------------------
     # looking into each log file
-    for f in $(ls ${d}/log/log.* | sort -V); do 
+    for f in $(ls ${d}/log/log.*_10* | sort -V); do 
 	ls $f
 	fparse=${fparse_dir}/${f##*/log.}.tmp
 
 
-	# #------------------------------
-	# # do we need to update tmp parse file?
-	# if [ -e "$fparse" ]; then
+	#------------------------------
+	# do we need to update tmp parse file?
+	if [ -e "$fparse" ]; then
 
-	#     time_fparse=$(stat -c %Y "$fparse")
-	#     fparse_is_newer=1
+	    time_fparse=$(stat -c %Y "$fparse")
+	    fparse_is_newer=1
 
-	#     time_log=$(stat -c %Y "$f")
+	    time_log=$(stat -c %Y "$f")
 	    
-	#     if [ "$time_fparse" -lt "$time_log" ]; then
-	# 	# log was updated after making fparse
-	# 	# so proceed to update
-	# 	:
-	#     else
-	# 	# echo "no need to update ${fparse}" 
-	# 	# no need to update
-	# 	continue
-	#     fi
-	# fi
+	    if [ "$time_fparse" -lt "$time_log" ]; then
+		# log was updated after making fparse
+		# so proceed to update
+		:
+	    else
+		# echo "no need to update ${fparse}" 
+		# no need to update
+		continue
+	    fi
+	fi
 
 
 
@@ -165,7 +171,7 @@ END{
     #---------------
     # update output
     echo -n "" > $output
-    for f in $(ls ${d}/log/log.* | sort -V); do 
+    for f in $(ls ${d}/log/log.*_10* | sort -V); do 
 	fparse=${fparse_dir}/${f##*/log.}.tmp
 
 	# save the parsed logfile into output

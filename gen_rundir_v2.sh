@@ -1,5 +1,6 @@
 #!/bin/bash
 # get rid of cont batch script
+# v2 does Nf0 by zero mass input
 
 # Check if the correct number of arguments was provided
 if [ $# -ne 5 ]; then
@@ -70,6 +71,13 @@ here=`pwd -P`
 dir_path="./confs"
 dir_name="conf_nc4nf1_"${JOB}
 
+if [ ${MASS} = "0.0000" ]; then	# string comparison is [] with =
+    JOB=$NL$NT"_b"$str_beta
+    dir_path="./confs_nf0"
+    dir_name="conf_nc4nf0_"${JOB}
+    TRAJS=6000
+fi
+
 #-----------------------------------------
 # Check if the directory already exists
 if [ -d "${dir_path}/${dir_name}" ]; then
@@ -92,6 +100,9 @@ NSTEPS=7
 TRAJLENGTH=1.0
 basepath="base"
 basexml="ip_hmc_mobius_base.xml"
+if [ ${MASS} = "0.0000" ]; then	# string comparison is [] with =
+    basexml="ip_hmc_mobius_nf0_base.xml"
+fi
 
 hostname=$(hostname)
 JOB_SCHEDULER="bsub"
@@ -116,6 +127,9 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
 	    #    which skip metropolistest and just accept
 	    SKIPFORTHERMALIZATION=50	
 	fi
+	if [ ${MASS} = "0.0000" ]; then	# string comparison is [] with =
+	    SKIPFORTHERMALIZATION=1000
+	fi
 	XML=${dir_path}/${dir_name}/${basexml}
 	
 	cp -a ${basepath}/$basexml $XML
@@ -134,18 +148,20 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
     sed -i 's/PARALLEL_SEEDS/'"${PARALLEL_SEEDS}"'/g' $XML
     sed -i 's/PREFIX/'"${dir_name}"'/g' $XML
     sed -i 's/BETA/'"${BETA}"'/g' $XML
-    sed -i 's/MASS/'"${MASS}"'/g' $XML
+    if [ ${MASS} != "0.0000" ]; then	# string comparison is [] with =
+	sed -i 's/MASS/'"${MASS}"'/g' $XML
+    fi
     sed -i 's/STARTING_TYPE/'"${STARTING_TYPE%%from*}"'/g' $XML
     sed -i 's/TRAJS/'"${TRAJS}"'/g' $XML
     sed -i 's/NSTEPS/'"${NSTEPS}"'/g' $XML
     sed -i 's/TRAJLENGTH/'"${TRAJLENGTH}"'/g' $XML
     sed -i 's/SKIPFORTHERMALIZATION/'"${SKIPFORTHERMALIZATION}"'/g' $XML
 
-
     # FIXME:
     # temporary thing to adjust params for 32^3*8 m=0.05
     if [[ ${NT} == "8" ]]; then
-	if [[ ${MASS} == "0.0500" || ${MASS} == "0.0100" ]] ; then
+	# if [[ ${MASS} == "0.0500" || ${MASS} == "0.0100" ]] ; then
+	if (( $( echo "${MASS} <= 0.05" | bc -l) )) ; then # if (( )) is required for float comp
 	    sed -i 's/>1.8</>1.5</g' $XML
 	    sed -i 's/MDsteps>'$NSTEPS'</MDsteps>7</g' $XML
 	fi

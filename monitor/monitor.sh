@@ -12,8 +12,14 @@ mkdir -p ${fparse_dir}
 #for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_b10p[7-9]*1000; do
 #for d in ../conf_nc4nf1_248_b10p75*100; do
 #for d in ../confs/conf_nc4nf1_??12_*667; do
-#for d in ../confs/conf_nc4nf1_328_b10p8*1000; do
-for d in ../confs/conf_nc4nf1_248_b11p0*4000 ../confs/conf_nc4nf1_328_b11p0*4000; do
+#for d in ../confs/conf_nc4nf1_??8_b1*[14]000; do
+#for d in ../confs/conf_nc4nf1_2412_b1* ../confs/conf_nc4nf1_??8_b1*; do
+for d in ../confs/conf_nc4nf1_2412_b1*; do
+#for d in ../confs/conf_nc4nf1_328_b11p01c_m0p4000; do
+#for d in ../confs/conf_nc4nf1_248_b11p0*4000 ../confs/conf_nc4nf1_328_b11p0*4000; do
+#for d in ../../run_gauge_conf/conf_nc4nf1_248_b10p[6-9]*[15]00; do
+#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_248_b10p8*1000 ../../run_gauge_conf/conf_nc4nf1_248_b10p[6-9]*[15]00; do
+#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_248_b10p[6-9]*[15]00; do
     outputlabel=${d##*/conf_nc4nf1_}
     output=${outputlabel}.txt
 
@@ -144,7 +150,8 @@ start && count==2 {start=0; print init+itraj, iter}' $f >> tmp0
 
 	# first remove the trajectory index
 	awk '{$1=""; print $0}' tmp0 > tmp
-	echo -e $header > ${fparse}	# The -e option enables interpretation of backslash escapes.
+	# echo -e $header > ${fparse}	# The -e option enables interpretation of backslash escapes.
+	echo -e $header > tmp0 # The -e option enables interpretation of backslash escapes.
 	
 	# make 2d array for multicolumn text
 	# check if all the columns have the same rows (Ntraj[NR]),
@@ -161,9 +168,12 @@ END{
 
    for(j=1;j<=minNtraj;j++) { if(j==1){printf "# \t"}else{printf j-1+init "\t"}; 
                          for(i=1;i<=NR;i++) printf a[i,j] "\t"; 
-                         print ""}}' tmp >> $fparse
+                         print ""}}' tmp >> tmp0 #$fparse
 
-	rm tmp0 tmp
+	# create fparse file at the very end
+	# to prevent fparse created and canceled while still running
+	mv tmp0 ${fparse}
+	rm tmp
 
     done
 

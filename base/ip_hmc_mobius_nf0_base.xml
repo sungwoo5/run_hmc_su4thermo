@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<grid>
+  <HMC>
+    <StartTrajectory>START_TRAJECTORY</StartTrajectory>
+    <Trajectories>TRAJS</Trajectories>
+    <MetropolisTest>true</MetropolisTest>
+    <NoMetropolisUntil>SKIPFORTHERMALIZATION</NoMetropolisUntil>
+    <StartingType>STARTING_TYPE</StartingType>
+    <PerformRandomShift>false</PerformRandomShift>
+    <MD>
+      <!-- <name>MinimumNorm2</name> -->
+      <name>ForceGradient</name>
+      <MDsteps>NSTEPS</MDsteps>
+      <trajL>TRAJLENGTH</trajL>
+    </MD>
+  </HMC>
+  <Checkpointer>
+    <config_prefix>PREFIX_lat</config_prefix>
+    <rng_prefix>PREFIX_rng</rng_prefix>
+    <saveInterval>100</saveInterval>
+    <saveSmeared>false</saveSmeared> <!--latest Grid-->
+    <smeared_prefix>PREFIX_lat_smr</smeared_prefix> <!--latest Grid-->
+    <format>IEEE64BIG</format>
+  </Checkpointer>
+  <RandomNumberGenerator>
+    <serial_seeds>SERIAL_SEEDS</serial_seeds>
+    <parallel_seeds>PARALLEL_SEEDS</parallel_seeds>
+  </RandomNumberGenerator>
+  <Action>
+    <gauge_beta>BETA</gauge_beta>
+  </Action>
+</grid>

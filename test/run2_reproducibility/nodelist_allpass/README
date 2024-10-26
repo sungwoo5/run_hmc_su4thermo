@@ -1,0 +1,8 @@
+[102424 sungwoo]
+* found that previously made nodelist for runs on 100724 included the runs that didn't go through the test at the end due to the wallclock time limit.
+Therefore, those runs are not actually passed the reproducibility test.
+Here, I re-scan the runs to get the correct nodelist
+
+* log_didntpass.txt:
+they are all canceled in the middle of runs, so didn't even enter into the test,
+so they are not failed actuallly but should be neglected in the passed nodelist
