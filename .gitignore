@@ -7,3 +7,4 @@ log_backup
 */fparse
 */trash
 **/tmp*
+**/.DS_Store

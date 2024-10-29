@@ -1,0 +1,104 @@
+[102124 sungwoo]
+There were total 5045 jobs analyzed <-- output of combine_nodelist.sh
+
+../../confs/conf_nc4nf1_248_b11p01c_m0p4000/log/log.248_b11p01c_m0p4000_fDa9thsRziK
+../../confs/conf_nc4nf1_248_b11p01_m0p4000/log/log.248_b11p01_m0p4000_fDa7p2ivcDd
+../../confs/conf_nc4nf1_248_b11p03c_m0p4000/log/log.248_b11p03c_m0p4000_fDa9uEmq2RD
+../../confs/conf_nc4nf1_248_b11p03_m0p4000/log/log.248_b11p03_m0p4000_fDa9uTwLeYo
+../../confs/conf_nc4nf1_248_b11p04c_m0p4000/log/log.248_b11p04c_m0p4000_fDa9ueLjcF9
+../../confs/conf_nc4nf1_248_b11p04_m0p4000/log/log.248_b11p04_m0p4000_fDa9uosizMm
+
+--> these are all initial jobs that don't have test for reading config file
+
+
+
+
+
+
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBV16zpNZLT
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBVUULpSpZm
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBVwqYZf5mh
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBWRCjybWK9
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBWtZqjtfaP
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBXMw4H4YX1
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBXqJ9ML3Aw
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBYJfKHHBNP
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBYn2KSu3v7
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBZFPXrezT1
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBZikkUGqEf
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBaC7zD88RV
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBafV3EncXq
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBb8r6Ykxjy
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBbcDCPW5rF
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBc5aGrBsju
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBcYwSSsBGs
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBd2Jcp27GB
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBdVfgagEYX
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBdy2tp4G71
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBeSQ9EwDu9
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBeumDdB3wm
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBfP8Gz7Nib
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBfrVUbuhWo
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBgKrgujgvK
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBgoDtMA6k7
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBhGb5wUSFy
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBhjxDKApGw
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBiDKNgWEGo
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBiggkRPefZ
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBjA3vJNpJK
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBjdR52eYFZ
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBk6nDZ4Mx3
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBka9NvPmwu
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBm3WYGFCfR
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBmWshRiiQX
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBmzErMrLcX
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBnTc24TbGs
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBnvyAcMQFh
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBoQLLfiUrs
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBoshVoi1Kd
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBpM4dQkGsh
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBppRo8qWpP
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBqHnxJK2ZV
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBqmA7r2MXm
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBrEXHRDfnP
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBrhtTgSeeK
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBsBFdWTqiP
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBsecnR7Ue3
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBt7yyNN87H
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBtbMA9Erc7
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBu4iLaqkST
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBuY5W5b6r3
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBv1Sga9yF5
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBvUorMDBkT
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBvxB1iYbkK
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBwRYB2v3BV
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBwtuLRjSTh
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBxNGVh8uLB
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBxqdgfsY5m
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fByJztsmaMu
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBynN54YbNo
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBzFjEQQ26K
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fBzj6PmjS6B
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fC1CTX21shR
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fC1QMqooo5H
+../../confs/conf_nc4nf1_328_b10p85_m0p1000/log/log.328_b10p85_m0p1000_cont5782_fC1QMwpCtJK
+
+--> all failed due to the failed saving 5782 in the previous run, found later, manually removed,
+    and later restarted from 5780
+
+
+../../confs/conf_nc4nf1_328_b11p03c_m0p4000/log/log.328_b11p03c_m0p4000_cont4_fCPwV9dN5yy
+../../confs/conf_nc4nf1_328_b11p03_m0p4000/log/log.328_b11p03_m0p4000_cont2_fCPwVTg3LwR
+../../confs/conf_nc4nf1_328_b11p04c_m0p4000/log/log.328_b11p04c_m0p4000_cont4_fCPwVjbfdWF
+
+--> these all made during the initial test, not being used
+
+
+
+[102524 sungwoo]
+I cleaned the log files for failed jobs and garbage jobs (ended imediately after started)
+- see log.102524, "there are 2 or more log files for this icfg"
+- 2412_*_m0p0667: many failures (Oct 23 22 ~ Oct24 01) due to the previous cfgfile failure (killed by wallclock timelimit while saving the file)
+- 328_*_m0p1000: 1 job started and killed imediately (on Oct13 01:41), probabily I was testing new job submission script..
+- 328_b10p85_m0p1000_cont5782: described above (on Oct8-11)
+- 328_b11p*_m0p4000: 2 jobs started and killed imidiately (on Oct 13 1:49), probabily I was testing new job submission script..
