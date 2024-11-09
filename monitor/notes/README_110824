@@ -1,0 +1,139 @@
+[110824 sungwoo]
+found that 248_b11p0*_m0p4000 have overlapped lassen and tuo generations....
+summary:
+- 248_b11p0[1-4]I deleted duplicated logs and confs in lassen
+- 248_b11p0[134]: these were originally started at tuo, but init with MDparams 1/7..
+  		  but to match with other 248 m=0.4, changed to 1/8 after init
+#==================================================================================
+# 248_b11p01_m0p4000 case for example, 
+
+248_b11p01_m0p4000_cont7160_fEc51WWGcDM.tmp
+248_b11p01_m0p4000_cont7180.tmp
+248_b11p01_m0p4000_cont7180_fGGUpvq4zPh.tmp
+248_b11p01_m0p4000_cont7380_fGGZSE5tiMV.tmp
+248_b11p01_m0p4000_cont7580_fGHRquBr3Dy.tmp
+248_b11p01_m0p4000_cont7596.tmp
+248_b11p01_m0p4000_cont7780_fGJJHqYfnB9.tmp
+248_b11p01_m0p4000_cont7980_fGKKuJ5RMt3.tmp
+248_b11p01_m0p4000_cont8008.tmp
+248_b11p01_m0p4000_cont8180_fGLCjyZx54j.tmp
+248_b11p01_m0p4000_cont8380_fGM9mD4Pnj9.tmp
+248_b11p01_m0p4000_cont8420.tmp
+248_b11p01_m0p4000_cont8580_fGN6mAhmHFM.tmp
+248_b11p01_m0p4000_cont8780_fGNyCtcb3xb.tmp
+248_b11p01_m0p4000_cont8830.tmp
+248_b11p01_m0p4000_cont8980_fGPvGCPtVom.tmp
+248_b11p01_m0p4000_cont9180_fGQsJ1F44EB.tmp
+248_b11p01_m0p4000_cont9240.tmp
+248_b11p01_m0p4000_cont9380_fGRpKDqcD2X.tmp
+248_b11p01_m0p4000_cont9580_fGSmKDGkqGs.tmp
+248_b11p01_m0p4000_cont9654.tmp
+248_b11p01_m0p4000_cont9780_fGTiN7nwYgF.tmp
+248_b11p01_m0p4000_cont9980_fGf5e1KxxnT.tmp
+248_b11p01_m0p4000_cont10070.tmp
+248_b11p01_m0p4000_cont10180_fGfAGomkSzT.tmp
+248_b11p01_m0p4000_cont10380_fGg2nFd7cQo.tmp
+248_b11p01_m0p4000_cont10496.tmp
+248_b11p01_m0p4000_cont10580_fGgysqjYxB9.tmp
+
+
+more details, the date is..
+  -rw-rw-r--   1 park49 lsd  59655706 Nov  1 21:18 log.lrun.248_b11p01_m0p4000_cont10070
+  -rw-rw-r--   1 park49 lsd  57696922 Nov  2 16:34 log.lrun.248_b11p01_m0p4000_cont10496
+  -rw-rw-r--   1 park49 lsd  58248623 Oct 27 06:56 log.lrun.248_b11p01_m0p4000_cont7180
+  -rw-rw-r--   1 park49 lsd  57823146 Oct 28 12:57 log.lrun.248_b11p01_m0p4000_cont7596
+  -rw-rw-r--   1 park49 lsd  57818391 Oct 29 04:23 log.lrun.248_b11p01_m0p4000_cont8008
+  -rw-rw-r--   1 park49 lsd  57406707 Oct 30 07:28 log.lrun.248_b11p01_m0p4000_cont8420
+  -rw-rw-r--   1 park49 lsd  57637011 Oct 30 22:09 log.lrun.248_b11p01_m0p4000_cont8830
+  -rw-rw-r--   1 park49 lsd  58108175 Oct 31 12:05 log.lrun.248_b11p01_m0p4000_cont9240
+  -rw-rw-r--   1 park49 lsd  58386564 Nov  1 05:17 log.lrun.248_b11p01_m0p4000_cont9654
+
+  -rw-r--r-- 1 park49 lsd 30936914 Nov  5 12:08 log.248_b11p01_m0p4000_cont10980_fGit5HdE3TD
+  -rw-r--r-- 1 park49 lsd 30943221 Nov  5 10:13 log.248_b11p01_m0p4000_cont10780_fGhw3p5P8o9
+  -rw-r--r-- 1 park49 lsd 30937210 Nov  5 08:09 log.248_b11p01_m0p4000_cont10580_fGgysqjYxB9
+  -rw-r--r-- 1 park49 lsd 30940316 Nov  5 06:14 log.248_b11p01_m0p4000_cont10380_fGg2nFd7cQo
+  -rw-r--r-- 1 park49 lsd 30940005 Nov  5 04:09 log.248_b11p01_m0p4000_cont10180_fGfAGomkSzT
+  -rw-r--r-- 1 park49 lsd 30938665 Nov  5 02:12 log.248_b11p01_m0p4000_cont9980_fGf5e1KxxnT
+  -rw-r--r-- 1 park49 lsd 30937250 Nov  4 03:59 log.248_b11p01_m0p4000_cont9780_fGTiN7nwYgF
+  -rw-r--r-- 1 park49 lsd 30939716 Nov  4 02:03 log.248_b11p01_m0p4000_cont9580_fGSmKDGkqGs
+  -rw-r--r-- 1 park49 lsd 30937632 Nov  4 00:07 log.248_b11p01_m0p4000_cont9380_fGRpKDqcD2X
+  -rw-r--r-- 1 park49 lsd 30939925 Nov  3 22:04 log.248_b11p01_m0p4000_cont9180_fGQsJ1F44EB
+  -rw-r--r-- 1 park49 lsd 30938038 Nov  3 19:59 log.248_b11p01_m0p4000_cont8980_fGPvGCPtVom
+  -rw-r--r-- 1 park49 lsd 30938958 Nov  3 18:02 log.248_b11p01_m0p4000_cont8780_fGNyCtcb3xb
+  -rw-r--r-- 1 park49 lsd 30941360 Nov  3 16:04 log.248_b11p01_m0p4000_cont8580_fGN6mAhmHFM
+  -rw-r--r-- 1 park49 lsd 30942375 Nov  3 14:04 log.248_b11p01_m0p4000_cont8380_fGM9mD4Pnj9
+  -rw-r--r-- 1 park49 lsd 30940276 Nov  3 12:05 log.248_b11p01_m0p4000_cont8180_fGLCjyZx54j
+  -rw-r--r-- 1 park49 lsd 30937129 Nov  3 10:08 log.248_b11p01_m0p4000_cont7980_fGKKuJ5RMt3
+  -rw-r--r-- 1 park49 lsd 30939507 Nov  3 08:11 log.248_b11p01_m0p4000_cont7780_fGJJHqYfnB9
+  -rw-r--r-- 1 park49 lsd 30942408 Nov  3 06:14 log.248_b11p01_m0p4000_cont7580_fGHRquBr3Dy
+  -rw-r--r-- 1 park49 lsd 30939612 Nov  3 04:11 log.248_b11p01_m0p4000_cont7380_fGGZSE5tiMV
+  -rw-r--r-- 1 park49 lsd 30936502 Nov  3 02:15 log.248_b11p01_m0p4000_cont7180_fGGUpvq4zPh
+  -rw-r--r-- 1 park49 lsd  3265354 Oct 24 11:28 log.248_b11p01_m0p4000_cont7160_fEc51WWGcDM
+
+
+For example, I have set MD param differently! it should be 1/8 but why 1/7 was used for lassen run?
+
+# (tuo) 248_b11p01_m0p4000_cont7180_fGGUpvq4zPh.tmp
+# Starting_type: CheckpointStart
+# Trajectory_length / Number_of_MD_steps: 1 / 8
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+7181	 5.7827041e-01	 +6.8099854e-03 -3.0515085e-05	 1.17e+00 Accepted	 30	 274	
+7182	 5.7850133e-01	 +6.4126179e-03 +1.2824875e-03	 1.39e+00 Accepted	 32	 328	
+7183	 5.7842927e-01	 +7.7441054e-03 +1.4886639e-03	 8.83e-01 Accepted	 34	 282	
+7184	 5.7825091e-01	 +6.9330155e-03 +4.7385837e-05	 1.07e+00 Accepted	 32	 264	
+7185	 5.7849416e-01	 +9.4132539e-03 -2.3492770e-03	 9.63e-01 Accepted	 30	 266	
+7186	 5.7859814e-01	 +8.2013056e-03 -1.5073543e-03	 1.11e+00 Accepted	 30	 278	
+7187	 5.7834755e-01	 +5.2331314e-03 -9.5705521e-04	 6.68e-01 Accepted	 31	 262	
+7188	 5.7810217e-01	 +6.7169091e-03 -1.6743991e-03	 8.74e-01 Accepted	 31	 291	
+7189	 5.7803754e-01	 +4.4791768e-03 +1.6416674e-03	 7.05e-01 Accepted	 32	 266	
+7190	 5.7775628e-01	 +7.6769269e-03 -1.2109689e-03	 9.89e-01 Accepted	 33	 323	
+7191	 5.7763344e-01	 +4.9108757e-03 -1.0157110e-03	 9.63e-01 Accepted	 35	 314	
+
+
+# (lassen) 248_b11p01_m0p4000_cont7180.tmp
+# Starting_type: CheckpointStart
+# Trajectory_length / Number_of_MD_steps: 1 / 7
+# 	 Plaquette	 Polyakov_Loop(re,im)	 Acc._Probability	 runtime_per_traj(s)	 CG_iterations	
+7181	 5.7826623e-01	 +6.8095777e-03 -3.0608891e-05	 1.23e+00 Accepted	 99	 274	
+7182	 5.7849452e-01	 +6.4119656e-03 +1.2826943e-03	 1.51e+00 Accepted	 100	 328	
+7183	 5.7842057e-01	 +7.7432119e-03 +1.4884323e-03	 8.55e-01 Accepted	 109	 282	
+7184	 5.7824084e-01	 +6.9316976e-03 +4.7420162e-05	 1.07e+00 Accepted	 98	 264	
+7185	 5.7848306e-01	 +9.4130625e-03 -2.3491803e-03	 9.49e-01 Accepted	 96	 266	
+7186	 5.7858639e-01	 +8.1995548e-03 -1.5070140e-03	 1.14e+00 Accepted	 95	 278	
+7187	 5.7833531e-01	 +5.2317416e-03 -9.5677813e-04	 5.88e-01 Accepted	 99	 262	
+7188	 5.7808951e-01	 +6.7146804e-03 -1.6768978e-03	 8.38e-01 Accepted	 96	 291	
+7189	 5.7808951e-01	 +6.7146804e-03 -1.6768978e-03	 6.37e-01 Rejected	 101	 266	
+7190	 5.7824142e-01	 +6.6932446e-03 +3.6847073e-03	 1.22e+00 Accepted	 105	 340	
+7191	 5.7824142e-01	 +6.6932446e-03 +3.6847073e-03	 8.19e-01 Rejected	 109	 283	
+
+
+
+#======================================================================================================
+# 248_b11p02c_m0p4000
+
+in this case, I had lassen and tuo overlap, but had same MD params 1/8,
+but as the machine error accumulated, PL values becomes differ even though they agree at the beginning
+Note that, as acceptence prob started to become more different, single different rejectance can
+make the traj completely different later
+
+# 248_b11p02c_m0p4000_cont11830_fGGUqCaKMz7.tmp
+11831	 5.7885505e-01	 -8.4726078e-04 -3.4186438e-04	 1.12e+00 Accepted	 32	 271	
+11900	 5.7876881e-01	 -7.8594537e-03 -1.8565470e-03	 8.04e-01 Rejected	 36	 287	
+11920	 5.7867480e-01	 -8.9407324e-03 -6.6850797e-04	 1.27e+00 Accepted	 39	 307	
+11950	 5.7884509e-01	 -1.0345972e-02 -3.6422294e-03	 1.06e+00 Accepted	 35	 252	
+12000	 5.7853431e-01	 -6.8005555e-03 -5.4792131e-04	 1.27e+00 Accepted	 39	 332	
+# 248_b11p02c_m0p4000_cont11830.tmp
+11831	 5.7885505e-01	 -8.4726078e-04 -3.4186438e-04	 1.12e+00 Accepted	 108	 271	
+11900	 5.7876883e-01	 -7.8594994e-03 -1.8568597e-03	 8.04e-01 Rejected	 110	 287	
+11920	 5.7866764e-01	 -8.9201678e-03 -5.3828789e-04	 1.24e+00 Accepted	 117	 306	
+11950	 5.7842334e-01	 -7.2464990e-03 -2.0636332e-03	 1.04e+00 Accepted	 111	 269	
+12000	 5.7883342e-01	 -7.2853137e-03 +9.7064601e-04	 8.73e-01 Accepted	 105	 262	
+
+
+#======================================================================================================
+# log.248_b11p03c_m0p4000_cont11004_fGmaEWi8Yzs
+this file was repeated twice.. but monitor.sh didn't know it was repeated and considered as
+traj=11005~11404 not 11005~11204
+If so, the later job started at 11205 but will be neglected in the later analysis as it is misunderstooded as just repeated..
+I think this also happened previously but don't know when..
+Updated monitor.sh to check if there's any repeat like this case

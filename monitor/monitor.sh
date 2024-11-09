@@ -14,41 +14,44 @@ mkdir -p ${fparse_dir}
 #for d in ../confs/conf_nc4nf1_??12_*667; do
 #for d in ../confs/conf_nc4nf1_??8_b1*[14]000; do
 #for d in ../confs/conf_nc4nf1_2412_b1* ../confs/conf_nc4nf1_??8_b1*; do
-for d in ../confs/conf_nc4nf1_2412_b1*; do
+#for d in ../confs/conf_nc4nf1_2412_b1*; do
 #for d in ../confs/conf_nc4nf1_328_b11p01c_m0p4000; do
-#for d in ../confs/conf_nc4nf1_248_b11p0*4000 ../confs/conf_nc4nf1_328_b11p0*4000; do
+#for d in ../confs/conf_nc4nf1_248_b1* ../confs/conf_nc4nf1_328_b*; do
+for d in ../confs/conf_nc4nf1_248_b11p03c*4000 ; do
 #for d in ../../run_gauge_conf/conf_nc4nf1_248_b10p[6-9]*[15]00; do
-#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_248_b10p8*1000 ../../run_gauge_conf/conf_nc4nf1_248_b10p[6-9]*[15]00; do
+#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_[23]?8_b10p8*1000 ../../run_gauge_conf_oslic/conf_nc4nf1_[23]?8_b11p0*4000; do
+#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_248_b11p0*4000 ../../run_gauge_conf_oslic/conf_nc4nf1_248_b10p[6-9]*[15]00; do
 #for d in ../../run_gauge_conf_oslic/conf_nc4nf1_248_b10p[6-9]*[15]00; do
+#for d in ../confs/conf_nc4nf1_248_b1*[23]000; do
     outputlabel=${d##*/conf_nc4nf1_}
     output=${outputlabel}.txt
 
     #------------------------------
     # do we need to update output?
-    if [ -e "$output" ]; then
+    # if [ -e "$output" ]; then
 
-	time_output=$(stat -c %Y "$output")
-	output_is_newer=1
+    # 	time_output=$(stat -c %Y "$output")
+    # 	output_is_newer=1
 
-	# then test if the log files are updated after this output
-	# add 2>/dev/null to supress error message in case there's no ${d}/log/log.*
-	for f in $(ls ${d}/log.* ${d}/log/log.* 2>/dev/null); do 
+    # 	# then test if the log files are updated after this output
+    # 	# add 2>/dev/null to supress error message in case there's no ${d}/log/log.*
+    # 	for f in $(ls ${d}/log.* ${d}/log/log.* 2>/dev/null); do 
 	    
-	    time_log=$(stat -c %Y "$f")
+    # 	    time_log=$(stat -c %Y "$f")
 
-	    if [ "$time_output" -lt "$time_log" ]; then
-		# log was updated after making output
-		output_is_newer=0
-		break		
-	    fi
-	done
+    # 	    if [ "$time_output" -lt "$time_log" ]; then
+    # 		# log was updated after making output
+    # 		output_is_newer=0
+    # 		break		
+    # 	    fi
+    # 	done
 	
-	if [ $output_is_newer -eq 1 ]; then
-	    echo "no need to update ${d}" 
-	    # no need to update
-	    continue
-	fi
-    fi
+    # 	if [ $output_is_newer -eq 1 ]; then
+    # 	    echo "no need to update ${d}" 
+    # 	    # no need to update
+    # 	    continue
+    # 	fi
+    # fi
 
     #-----------------------------
     # looking into each log file
@@ -96,6 +99,8 @@ for d in ../confs/conf_nc4nf1_2412_b1*; do
 	    # startingtype is empty, so check further
 	    if ! grep -q "and plaquette, link trace, and checksum agree" $f; then
 		# checksum failed, so skip this log file
+		mkdir -p ${d}/log/fail
+		mv $f ${d}/log/fail/.
 		continue
 	    else
 		echo "$f, no Starting type found"
@@ -112,9 +117,22 @@ for d in ../confs/conf_nc4nf1_2412_b1*; do
 	trajlength=`awk '/Trajectory length/ {print $12; exit}' $f`
 	mdsteps=`awk '/Number of MD steps/ {print $14; exit}' $f`
 
+
+       	# scan plaquette with traj idx first
 	echo "# Plaquette" >> tmp0
 	grep -A 1 "Unsmeared plaquette" $f | grep "Plaquette" | awk '{printf("%d %.7e\n",$10,$12)}' >> tmp0
 
+	# Note that traj idx will be inferred from ${init} and single increment
+	# but it can be wrong if the log file somehow repeated twice (it happens..)
+	# so check if this didn't happen
+	awk -v init="${init}" '{ if ( NR >1 && $1 != init+NR-1) { print "Error at line " NR ": Expected " (init+NR-1) ", but found " $1; exit 1 } }' tmp0
+	# Check the exit status of awk
+	if [[ $? -ne 0 ]]; then
+	    echo "Trajectory index Sequential check failed."
+	    exit 1
+	fi
+
+	
 	printf "\n\n\n# Polyakov_Loop(re,im)\n" >> tmp0
 	grep "Polyakov Loop" $f | awk '{print $11,$13}' | sed 's/[(),]/ /g' | awk '{printf("%d\t%+.7e\t%+.7e\n",$1,$2,$3)}' >> tmp0
 
@@ -149,6 +167,7 @@ start && count==2 {start=0; print init+itraj, iter}' $f >> tmp0
 	header+="# Trajectory_length / Number_of_MD_steps: ${trajlength} / ${mdsteps}"
 
 	# first remove the trajectory index
+	# as it was already tested that they are sequential with 1 increment 
 	awk '{$1=""; print $0}' tmp0 > tmp
 	# echo -e $header > ${fparse}	# The -e option enables interpretation of backslash escapes.
 	echo -e $header > tmp0 # The -e option enables interpretation of backslash escapes.
@@ -170,6 +189,7 @@ END{
                          for(i=1;i<=NR;i++) printf a[i,j] "\t"; 
                          print ""}}' tmp >> tmp0 #$fparse
 
+	
 	# create fparse file at the very end
 	# to prevent fparse created and canceled while still running
 	mv tmp0 ${fparse}
