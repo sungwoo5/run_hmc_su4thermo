@@ -4,20 +4,27 @@
 
 # v2: save parse of each log file to tmp
 # v3: add log/log.* files for new dir structure for tuo runs
-# v4: deals with flux repeated stdout bug
-#     use lastNR to scan only up to the correct amount
-#     support nf0
 fparse_dir=fparse
 mkdir -p ${fparse_dir}
 
 #-------------------------
 # run over the ensembles
-#for d in ../confs_nf0/conf_nc4nf0_328_b11p07; do
-for d in ../confs/conf_nc4nf1_248_b11p0*; do
-    outputlabel=${d##*/conf_nc4nf0_}
-    if [[ ${d} == *"nc4nf1"* ]]; then
-	outputlabel=${d##*/conf_nc4nf1_}
-    fi
+#for d in ../conf_nc4nf1_248_*100 ../conf_nc4nf1_248_*500 ../conf_nc4nf1_??8_b10p[7-9]*1000; do
+#for d in ../conf_nc4nf1_248_b10p75*100; do
+#for d in ../confs/conf_nc4nf1_??12_*667; do
+#for d in ../confs/conf_nc4nf1_??8_b1*[14]000; do
+#for d in ../confs/conf_nc4nf1_2412_b1* ../confs/conf_nc4nf1_??8_b1*; do
+#for d in ../confs/conf_nc4nf1_2412_b1*; do
+#for d in ../confs/conf_nc4nf1_328_b11p01c_m0p4000; do
+#for d in ../confs/conf_nc4nf1_248_b1* ../confs/conf_nc4nf1_328_b*; do
+for d in ../confs/conf_nc4nf1_328_b11p0*4000; do
+#for d in ../confs/conf_nc4nf1_248_b11p03c*4000 ; do
+#for d in ../../run_gauge_conf/conf_nc4nf1_248_b10p[6-9]*[15]00; do
+#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_[23]?8_b10p8*1000 ../../run_gauge_conf_oslic/conf_nc4nf1_[23]?8_b11p0*4000; do
+#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_248_b11p0*4000 ../../run_gauge_conf_oslic/conf_nc4nf1_248_b10p[6-9]*[15]00; do
+#for d in ../../run_gauge_conf_oslic/conf_nc4nf1_248_b10p[6-9]*[15]00; do
+#for d in ../confs/conf_nc4nf1_248_b1*[23]000; do
+    outputlabel=${d##*/conf_nc4nf1_}
     output=${outputlabel}.txt
 
     #------------------------------
@@ -111,43 +118,38 @@ for d in ../confs/conf_nc4nf1_248_b11p0*; do
 	trajlength=`awk '/Trajectory length/ {print $12; exit}' $f`
 	mdsteps=`awk '/Number of MD steps/ {print $14; exit}' $f`
 
-	#----------------------------------------------------------------------------
-	# Note that traj idx will be inferred from ${init} and single increment
-	# but it can be wrong if the log file somehow repeated twice (it happens..)
-	#
-	# lastNR: the last NR that is increasing and correct, so to be saved
-	#
-	# and we truncate after lastNR in the following awks
-	lastNR=$(grep -A 1 "Unsmeared plaquette" $f | grep "Plaquette" | awk -v init=${init} '{ lastNR=NR; if ( NR >0 && $10 != init+NR) { lastNR--; exit 1 } } END {print lastNR}')
-	# echo "lastNR" $lastNR
-	
+
        	# scan plaquette with traj idx first
 	echo "# Plaquette" >> tmp0
-	grep -A 1 "Unsmeared plaquette" $f | grep "Plaquette" | awk -v lastNR=${lastNR} 'NR <= lastNR {printf("%d %.7e\n",$10,$12)}' >> tmp0
+	grep -A 1 "Unsmeared plaquette" $f | grep "Plaquette" | awk '{printf("%d %.7e\n",$10,$12)}' >> tmp0
+
+	# Note that traj idx will be inferred from ${init} and single increment
+	# but it can be wrong if the log file somehow repeated twice (it happens..)
+	# so check if this didn't happen
+	awk -v init="${init}" '{ if ( NR >1 && $1 != init+NR-1) { print "Error at line " NR ": Expected " (init+NR-1) ", but found " $1; exit 1 } }' tmp0
+	# Check the exit status of awk
+	if [[ $? -ne 0 ]]; then
+	    echo "Trajectory index Sequential check failed."
+	    exit 1
+	fi
+
 	
 	printf "\n\n\n# Polyakov_Loop(re,im)\n" >> tmp0
-	grep "Polyakov Loop" $f | awk '{print $11,$13}' | sed 's/[(),]/ /g' | awk -v lastNR=${lastNR} 'NR <= lastNR {printf("%d\t%+.7e\t%+.7e\n",$1,$2,$3)}' >> tmp0
+	grep "Polyakov Loop" $f | awk '{print $11,$13}' | sed 's/[(),]/ /g' | awk '{printf("%d\t%+.7e\t%+.7e\n",$1,$2,$3)}' >> tmp0
 
 	printf "\n\n\n# Acc._Probability\n" >> tmp0
-	awk -v init=${init} -v lastNR=${lastNR} 'BEGIN {idx=0} 
-	       		     /Total H after trajectory/ {dH=$16; } 
-	       		     /Skipping/ {idx++; printf("%d %.2e Skipping\n", init+idx, exp(-dH)); next} 
-			     /exp\(-dH\)/ {idx++; printf("%d %.2e ",init+idx, $10); if ($10 > $13) print "Accepted"; else print "Rejected"; next} 
-			     idx==lastNR {exit}' $f >> tmp0
+	# grep "exp(-dH)" $f | awk -v init=${init} '{itraj++; printf("%d %.2e ", init+itraj, $10); if ($10 > $13) print "Accepted"; else print "Rejected";}' >> tmp0
+	awk '/Skipping/ {printf("1 %.2e Skipping\n", exp(-prev2)); next} /exp\(-dH\)/ {printf("1 %.2e ",$10); if ($10 > $13) print "Accepted"; else print "Rejected"; next} {prev2=prev1; prev1=$16}' $f >> tmp0
 
 	printf "\n\n\n# runtime_per_traj(s)\n" >> tmp0
-	grep "Total time for trajectory" $f | awk  -v init=${init} -v lastNR="${lastNR}" 'NR <= lastNR {itraj++; printf("%d %.0f\n",init+itraj, $13)}' >> tmp0
-
-	# CG inversion only if nf1
-	if [[ ${d} == *"nc4nf1"* ]]; then
-	    # Parse two lines of iterations (Red/Black?) after "Compute final actionGrid : Integrator : XXXXX s : Integrator action"
-	    printf "\n\n\n# CG_iterations\n" >> tmp0
-	    awk -v init=${init} -v lastNR=${lastNR} '
-	    	/Compute final actionGrid / {itraj++; start=1; count=0; iter=0; next} 
-		start && /ConjugateGradient Converged on iteration/ {count++; iter+=$12} 
-		start && count==2 {start=0; print init+itraj, iter}
-		itraj==lastNR {exit}' $f >> tmp0
-	fi
+	grep "Total time for trajectory" $f | awk  -v init=${init} '{itraj++; printf("%d %.0f\n",init+itraj, $13)}' >> tmp0
+	
+	# Parse two lines of iterations (Red/Black?) after "Compute final actionGrid : Integrator : XXXXX s : Integrator action"
+	printf "\n\n\n# CG_iterations\n" >> tmp0
+	awk -v init=${init} '
+/Compute final actionGrid / {itraj++; start=1; count=0; iter=0; next} 
+start && /ConjugateGradient Converged on iteration/ {count++; iter+=$12} 
+start && count==2 {start=0; print init+itraj, iter}' $f >> tmp0
 
 	# parse finished
 
@@ -201,8 +203,7 @@ END{
     echo -n "" > $output
     # for f in $(ls ${d}/log.* | sort -V); do 
     # 	fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
-    # for fparse in $(ls ${fparse_dir}/${outputlabel}*.tmp | grep -v "cont") $(ls ${fparse_dir}/${outputlabel}*.tmp | grep "cont" | sort -V); do 
-    for fparse in $(ls ${fparse_dir}/${outputlabel}_*.tmp | grep "cont" | sort -V); do 
+    for fparse in $(ls ${fparse_dir}/${outputlabel}*.tmp | grep -v "cont") $(ls ${fparse_dir}/${outputlabel}*.tmp | grep "cont" | sort -V); do 
     	# fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
 
 	# save the parsed logfile into output

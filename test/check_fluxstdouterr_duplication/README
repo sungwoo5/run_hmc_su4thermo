@@ -1,0 +1,20 @@
+[111324 sungwoo]
+Flux caused errors if I do "flux run xxx >& ${LOG}".
+- larger stdout with longer runs: it hangs at some point and lose the stdout
+- even with smaller output with ~25MB: it duplicated. repeated the same stdout twice in a single file
+  -> it caused wrong thing in monitor.sh as it was assuming sequentially increasing traj.
+  
+The 2nd issue seems resolved by using "flux run --output=${LOG}" instead.
+Previously generated logfiles were reinvestigated.
+
+- nf0: occured so many times, updated monitor.sh to deals with this without modifying log files, and re-run this script.
+- nf1: too many logs exist, but assuming didn't happen that much. checked using check_fluxstdouterr_duplication.sh,
+       and found the 3 of faulty logs. Including 2 additional things that I found previously using monitor.sh.
+       Anyway these are manually fixed, and the originals are conserved with _log.xx as follows.
+
+[park49@oslic2:confs]$ ls -al conf_nc4nf1_*/log/_log*
+-rw-r--r-- 1 park49 lsd 61728139 Nov  8 06:04 conf_nc4nf1_248_b11p01c_m0p4000/log/_log.248_b11p01c_m0p4000_cont16012_fHFGsyqv42K
+-rw-r--r-- 1 park49 lsd 61719611 Nov  9 15:44 conf_nc4nf1_248_b11p02_m0p4000/log/_log.248_b11p02_m0p4000_cont21908_fHXuuiQAQB9
+-rw-r--r-- 1 park49 lsd 61879811 Nov  5 17:45 conf_nc4nf1_248_b11p03c_m0p4000/log/_log.248_b11p03c_m0p4000_cont11004_fGmaEWi8Yzs
+-rw-r--r-- 1 park49 lsd 61872549 Nov  6 01:10 conf_nc4nf1_248_b11p04_m0p4000/log/_log.248_b11p04_m0p4000_cont11560_fGpECT11XQK
+-rw-r--r-- 1 park49 lsd 55155291 Nov  8 05:52 conf_nc4nf1_248_b11p05c_m0p3000/log/_log.248_b11p05c_m0p3000_cont2480_fHFEfDEz5rX

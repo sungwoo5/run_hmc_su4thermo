@@ -16,7 +16,7 @@ fi
 # gauge configuration parameters
 NL=$1
 NT=$2
-BETA=$(printf "%05.2f" $3)
+BETA=$(printf "%06.3f" $3)
 MASS=$(printf "%.4f" $4)
 STARTING_TYPE=$5
 TRAJS=500	# just large enough number to run over the whole walltime
@@ -162,6 +162,10 @@ for ifcheckpoint in "" "CheckpointStartfrom"; do
     if [[ ${NT} == "8" ]]; then
 	# if [[ ${MASS} == "0.0500" || ${MASS} == "0.0100" ]] ; then
 	if (( $( echo "${MASS} <= 0.05" | bc -l) )) ; then # if (( )) is required for float comp
+	    sed -i 's/>1.8</>1.5</g' $XML
+	    sed -i 's/MDsteps>'$NSTEPS'</MDsteps>7</g' $XML
+	fi
+	if [[ ${MASS} == "0.2000" || ${MASS} == "0.3000" ]] ; then
 	    sed -i 's/>1.8</>1.5</g' $XML
 	    sed -i 's/MDsteps>'$NSTEPS'</MDsteps>7</g' $XML
 	fi
