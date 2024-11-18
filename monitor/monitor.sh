@@ -13,7 +13,9 @@ mkdir -p ${fparse_dir}
 #-------------------------
 # run over the ensembles
 #for d in ../confs_nf0/conf_nc4nf0_328_b11p07; do
-for d in ../confs/conf_nc4nf1_248_b11p0*; do
+#for d in ../confs/conf_nc4nf1_248_b11p04c_m0p4000; do
+#for d in ../confs/conf_nc4nf1_248_b1* ; do
+for d in ../confs_elcap/conf_nc4nf1_328_b1* ; do
     outputlabel=${d##*/conf_nc4nf0_}
     if [[ ${d} == *"nc4nf1"* ]]; then
 	outputlabel=${d##*/conf_nc4nf1_}
@@ -29,7 +31,7 @@ for d in ../confs/conf_nc4nf1_248_b11p0*; do
 
     	# then test if the log files are updated after this output
     	# add 2>/dev/null to supress error message in case there's no ${d}/log/log.*
-    	for f in $(ls ${d}/log.* ${d}/log/log.* 2>/dev/null); do 
+    	for f in $(ls ${d}/log.* ${d}/log/log.* ${d}/log_elcap/log.* 2>/dev/null); do 
 	    
     	    time_log=$(stat -c %Y "$f")
 
@@ -50,7 +52,8 @@ for d in ../confs/conf_nc4nf1_248_b11p0*; do
     #-----------------------------
     # looking into each log file
     # add 2>/dev/null to supress error message in case there's no ${d}/log/log.*
-    for f in $(ls ${d}/log.* ${d}/log/log.* 2>/dev/null | sort -V); do 
+    for f in $(ls ${d}/log.* ${d}/log/log.*  ${d}/log_elcap/log.* 2>/dev/null | sort -V); do 
+    # for f in $(ls ${d}/log/log.* 2>/dev/null | sort -V); do 
 	ls $f
 	if [[ ${f} == *"log.lrun."* ]]; then
 	    fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
@@ -145,8 +148,8 @@ for d in ../confs/conf_nc4nf1_248_b11p0*; do
 	    awk -v init=${init} -v lastNR=${lastNR} '
 	    	/Compute final actionGrid / {itraj++; start=1; count=0; iter=0; next} 
 		start && /ConjugateGradient Converged on iteration/ {count++; iter+=$12} 
-		start && count==2 {start=0; print init+itraj, iter}
-		itraj==lastNR {exit}' $f >> tmp0
+		start && count==2 {start=0; print init+itraj, iter; if (itraj==lastNR) {exit}}
+		' $f >> tmp0
 	fi
 
 	# parse finished
@@ -201,8 +204,8 @@ END{
     echo -n "" > $output
     # for f in $(ls ${d}/log.* | sort -V); do 
     # 	fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
-    # for fparse in $(ls ${fparse_dir}/${outputlabel}*.tmp | grep -v "cont") $(ls ${fparse_dir}/${outputlabel}*.tmp | grep "cont" | sort -V); do 
-    for fparse in $(ls ${fparse_dir}/${outputlabel}_*.tmp | grep "cont" | sort -V); do 
+    for fparse in $(ls ${fparse_dir}/${outputlabel}*.tmp | grep -v "cont") $(ls ${fparse_dir}/${outputlabel}_*.tmp | grep "cont" | sort -V); do 
+    # for fparse in $(ls ${fparse_dir}/${outputlabel}_*.tmp | grep "cont" | sort -V); do 
     	# fparse=${fparse_dir}/${f##*/log.lrun.}.tmp
 
 	# save the parsed logfile into output

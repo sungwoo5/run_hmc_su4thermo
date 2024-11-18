@@ -68,7 +68,8 @@ fi
 
 JOB=$NL$NT"_b"$str_beta"_m"$str_mass
 here=`pwd -P`
-dir_path="./confs"
+#dir_path="./confs"
+dir_path="./confs_elcap"
 dir_name="conf_nc4nf1_"${JOB}
 
 if [ ${MASS} = "0.0000" ]; then	# string comparison is [] with =
